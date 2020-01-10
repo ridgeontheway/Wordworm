@@ -1,0 +1,8 @@
+{
+    "name": "foobar-app",
+    "version": "0.1.0",
+    "scripts": {
+        "start": "npm run start --prefix server",
+        "heroku-postbuild": "npm run build-for-deployment --prefix server"
+    }
+}
