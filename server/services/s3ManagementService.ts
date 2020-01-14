@@ -9,24 +9,11 @@ class s3ManagementService {
     public s3: aws.S3;
     public multerObj: multer.Instance;
 
+
     constructor(){
         this.awsConfigure()
         this.s3 = new aws.S3()
         this.multerObj = this.multerConfigure()
-    }
-
-    isObjectUploaded(key: string) {
-        let objectUploaded = false
-        const keys: string[] = this.getObjectsFromBucket(sessionKeys.AWSBucketName)
-
-        for (let i = 0; i < keys.length; i++) {
-            if (keys[i] === key) {
-                objectUploaded = true
-                break
-            }
-        }
-
-        return objectUploaded
     }
 
     getUpload() {
@@ -60,6 +47,14 @@ class s3ManagementService {
 
     private multerConfigure() {
         let tempObj = multer({
+            fileFilter: function(req, file, cb) {
+                if (file.mimetype === 'application/epub+zip') {
+                    cb(null, true)
+                }
+                else {
+                    cb(new Error('Invalid file type being uploaded!'), false)
+                }
+            },
             storage: multerS3({
                 s3: this.s3,
                 bucket: sessionKeys.AWSBucketName,
@@ -69,25 +64,11 @@ class s3ManagementService {
                 key: function (req, file, cb) {
                     console.log(file)
                     cb(null, file.originalname)
-                }
+                },
+                acl: 'public-read'
             })
         })
         return tempObj
-    }
-
-    private getObjectsFromBucket(bucketName: string) {
-        let keyArray: string[] = new Array()
-        const response = this.s3.listObjectsV2({
-            Bucket: sessionKeys.AWSBucketName,
-        })
-
-        if (response) {
-            //response.Contents.forEach(item => {
-            //    keyArray.push(item.Key!.toString())
-            //}) 
-        }
-
-        return keyArray
     }
 }
 
