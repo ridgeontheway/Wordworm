@@ -9,7 +9,6 @@ class s3ManagementService {
     public s3: aws.S3;
     public multerObj: multer.Instance;
 
-
     constructor(){
         this.awsConfigure()
         this.s3 = new aws.S3()

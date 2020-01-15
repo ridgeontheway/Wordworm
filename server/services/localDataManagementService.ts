@@ -1,36 +1,101 @@
 import fs from 'fs'
-import path from 'path'
+import EPUBToText from './epub-to-text'
+import * as readline from 'readline'
 
 class localDataManagementService {
     private readonly LOCAL_STORAGE_PATH = "./models/data/"
+    private readonly LOCAL_PARSED_PATH = "./models/data/parsedBooks/"
+    private epubParserService : EPUBToText
 
     constructor() {
         this.initializeDataFolder()
+        this.epubParserService = new EPUBToText
     }
 
     getLocalStoragePath() { return this.LOCAL_STORAGE_PATH }
     
-    isFileDownloaded(fileName: string) {
-        const strippedFileName = path.parse(fileName).name
-        let isObjectDownloaded = false
+    public async getRequestedWords(fileName: string, startWord: number, incrementValue: number) {
+        return new Promise((resolve, reject) => {
+            // Writing epub to .txt
+            this.epubParserService.extractTo(this.LOCAL_STORAGE_PATH + fileName, this.LOCAL_PARSED_PATH, (err) => {
 
-        fs.readdir(this.LOCAL_STORAGE_PATH, function (err, files) {
-            if (err) { console.log(' error: ', err) }
+            })
 
-            for (let i = 0; i < files.length; i++) {
-                console.log(files[i].trim().localeCompare(fileName))
-                if (files[i].trim().localeCompare(fileName) == 0) {
-                    return true
-                }
+            var bookLocations: Array<string> = this.getParsedFilesForBook(fileName)
+            var wordsSelectedFromLocations = this.readFiles(bookLocations, startWord, incrementValue)
+            resolve(wordsSelectedFromLocations)
+        })
+    }
+
+
+    private async readFiles(bookLocations: Array<string>, startWord: number, incrementValue: number) {
+            var wordsSelectedFromLocations: string = ""
+            var wordsLeftToRetrieve = incrementValue
+
+            for (let location of bookLocations) {
+                var readingInfo: any = await this.getWordsFromParsedLocation(startWord, wordsLeftToRetrieve, this.LOCAL_PARSED_PATH + location)
+                wordsSelectedFromLocations += readingInfo.retrievedWords
+                wordsLeftToRetrieve = readingInfo.wordsLeftToRetrieve 
+            }
+            return wordsSelectedFromLocations
+    }
+
+    private getParsedFilesForBook(fileName: string) {
+        var strippedFileName = fileName.split('.').shift()
+        var parsedBookLocations: Array<string> = new Array
+        var files = fs.readdirSync(this.LOCAL_PARSED_PATH)
+
+        files.forEach(file => {
+            var strippedParsedFileName = file.split('.').shift()
+            strippedParsedFileName = strippedParsedFileName!.substring(strippedParsedFileName!.indexOf('-') + 1)
+
+            if(strippedParsedFileName === strippedFileName) {
+                console.log('adding: ' + file)
+                parsedBookLocations.push(file)
             }
         })
 
-        return false
+        return parsedBookLocations
+    }
+
+    private getWordsFromParsedLocation(startWord: number, wordsToRetrieve: number, fileLocation: string) {
+        return new Promise((resolve, reject) => {
+            var retrievedWords: string = ""
+            var wordsLeftToRetrieve = wordsToRetrieve
+    
+            const readStream = fs.createReadStream(fileLocation)
+            var lineReader = readline.createInterface({
+                input: readStream
+            })
+            lineReader.on('line', (line) => {
+                if(wordsLeftToRetrieve > 0) {
+                    var wordsInLine = line.split(' ').length
+                    if (!(line.trim() === '')) {
+                        console.log('this is the line we are looking at: ' + line)
+                        retrievedWords += '\n' + line
+                        wordsLeftToRetrieve = wordsLeftToRetrieve - wordsInLine
+                    }
+                }
+                else {
+                    readStream.destroy()
+                    lineReader.close()
+                }
+            })
+
+            lineReader.on('close', () => {
+                console.log('I am getting called here?')
+                resolve({wordsLeftToRetrieve, retrievedWords})
+            })
+
+        })
     }
 
     private initializeDataFolder() {
         if(!fs.existsSync(this.LOCAL_STORAGE_PATH)) {
             fs.mkdirSync(this.LOCAL_STORAGE_PATH)
+        }
+        if(!fs.existsSync(this.LOCAL_PARSED_PATH)) {
+            fs.mkdirSync(this.LOCAL_PARSED_PATH)
         }
     }
 }
