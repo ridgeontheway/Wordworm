@@ -5,9 +5,12 @@ class Keys {
   public cookieKey: string;
   public googleCallBackURL: string;
   public logInRedirectURL: string;
+  public AWSAccessKeyId: string;
+  public AWSSecretKey: string;
+  public AWSBucketName: string;
 
   constructor() {
-    var importedModule: { googleClientID: string; googleClientSecret: string; mongoURI: string; cookieKey: string; googleCallBackURL: string; logInRedirectURL: string };
+    var importedModule: { googleClientID: string; googleClientSecret: string; mongoURI: string; cookieKey: string; googleCallBackURL: string; logInRedirectURL: string, AWSAccessKeyId: string, AWSSecretKey: string, AWSBucketName: string };
 
     if(process.env.NODE_ENV === 'production'){
       importedModule = require('./prod')
@@ -22,6 +25,9 @@ class Keys {
     this.cookieKey = importedModule.cookieKey!;
     this.googleCallBackURL = importedModule.googleCallBackURL!;
     this.logInRedirectURL = importedModule.logInRedirectURL!;
+    this.AWSAccessKeyId = importedModule.AWSAccessKeyId!;
+    this.AWSSecretKey = importedModule.AWSSecretKey!;
+    this.AWSBucketName = importedModule.AWSBucketName!;
   }
 }
 export const sessionKeys = new Keys()

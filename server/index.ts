@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import { sessionKeys } from './config/keys'
 import cookieSession from 'cookie-session'
 import passport from 'passport'
+import cors from 'cors'
 
 import './models/user-model'
 import './services/passport'
@@ -19,8 +20,10 @@ app.use(
 )
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(cors())
 
 require('./routes/authRoutes')(app)
+require('./routes/fileManagmentRoutes')(app)
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'))
