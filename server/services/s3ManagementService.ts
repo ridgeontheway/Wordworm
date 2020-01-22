@@ -5,7 +5,7 @@ import fs from 'fs'
 import { sessionKeys } from '../config/keys'
 import { localDataService } from './localDataManagementService'
 
-class s3ManagementService {
+class S3ManagementService {
     public s3: aws.S3;
     public multerObj: multer.Instance;
 
@@ -71,4 +71,4 @@ class s3ManagementService {
     }
 }
 
-export const s3ObjectManagementService = new s3ManagementService()
+export const s3ObjectManagementService = new S3ManagementService()

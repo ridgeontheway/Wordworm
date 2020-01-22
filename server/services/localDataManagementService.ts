@@ -1,15 +1,15 @@
 import fs from 'fs'
-import EPUBToText from './epub-to-text'
+import EpubToTextService  from './epubToTextService'
 import * as readline from 'readline'
 
-class localDataManagementService {
+class LocalDataManagementService {
     private readonly LOCAL_STORAGE_PATH = "./models/data/"
     private readonly LOCAL_PARSED_PATH = "./models/data/parsedBooks/"
-    private epubParserService : EPUBToText
+    private epubParserService : EpubToTextService
 
     constructor() {
         this.initializeDataFolder()
-        this.epubParserService = new EPUBToText
+        this.epubParserService = new EpubToTextService()
     }
 
     getLocalStoragePath() { return this.LOCAL_STORAGE_PATH }
@@ -100,4 +100,4 @@ class localDataManagementService {
     }
 }
 
-export const localDataService = new localDataManagementService()
+export const localDataService = new LocalDataManagementService()

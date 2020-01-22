@@ -1,14 +1,15 @@
-'use strict'
+// Refactored from (https://github.com/Projet-TAMIS/epub-to-text)
+import fs from 'fs'
+import EPub from 'epub'
+import htmlToText from 'html-to-text'
+import path from 'path'
+import { parse, HTMLElement, TextNode } from 'node-html-parser'
 
-var fs = require('fs');
-var EPub = require('epub');
-var htmlToText = require('html-to-text');
-var path = require('path');
-var htmlParser = require('node-html-parser');
+type ParseResult = (TextNode & { valid: boolean; }) | (HTMLElement & { valid: boolean; });
 
-class EPUBToText {
+export default class EpubToTextService {  
   /**
-   * EpubToText#extract()
+   * EpubToTextService#extract()
    *
    * Opens the EPUB in sourceFile, extracts all chapters
    * and calls a callback function with the chapter content.
@@ -30,16 +31,21 @@ class EPUBToText {
           if (html) {
             txt = htmlToText.fromString(html.toString(), {ignoreHref: true});
           };
-          var meta = {};
-          meta.id = chapter.id;
-          meta.excerpt = txt.trim().slice(0, 250);
-          meta.size = txt.length
-          meta.sequence_number = sequence
+
+          var meta : { id: string, excerpt: string, size: number, sequence_number: number, title?: string } = 
+          {
+            id: chapter.id,
+            excerpt: txt.trim().slice(0, 250),
+            size: txt.length,
+            sequence_number: sequence,
+          }
+          
           if (chapter.title) {
             meta.title = chapter.title
           } else {
             meta.title = klass.getTitleFromHtml(html);
           }
+          
           callback(err, txt, sequence, meta);
         });
       });
@@ -56,7 +62,7 @@ class EPUBToText {
   }
 
   /**
-   * EpubToText#extractTo()
+   * EpubToTextService#extractTo()
    *
    * Opens the EPUB in sourceFile and saves all chapters
    * in destFolder. Chapters will be name according to the
@@ -81,12 +87,13 @@ class EPUBToText {
   }
 
   /**
-   * EpubToText#getTitleFromHtml()
+   * EpubToTextService#getTitleFromHtml()
    *
    * Best efforts to find a title in the HTML tags (title, H1, etc.)
    **/
   getTitleFromHtml(html) {
-    const root = htmlParser.parse(html);
+    const result: ParseResult = parse(html)
+    const root = (result as unknown) as HTMLElement
     var title = root.querySelector('h1');
     if (title == null) {
       title = root.querySelector('title');
@@ -97,5 +104,3 @@ class EPUBToText {
     return title.structuredText.replace("\n", " ");
   }
 }
-
-module.exports = EPUBToText;
