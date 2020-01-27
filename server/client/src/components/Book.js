@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import AudioStreamer from '../utils/streamUtility'
+import speechToTextUtils from '../utils/streamUtility'
 import socketIOClient from 'socket.io-client'
 
 export default class Book extends Component {
@@ -11,21 +11,33 @@ export default class Book extends Component {
     }
   }
 
-  componentDidMount () {
-    const { endpoint } = this.state
-    const socket = socketIOClient(endpoint)
-    socket.on('hello', data => this.setState({ response: data }))
+  thing () {
+    speechToTextUtils.initRecording((data) => {
+      console.log(data)
+    }, (error) => {
+      console.error('Error when recording', error)
+        this.setState({ recording: false })
+        // No further action needed, as this already closes itself on error
+    })
   }
 
+  onStop () {
+    this.setState({ recording: false })
+    speechToTextUtils.stopRecording()
+    if (this.props.onStop) {
+      this.props.onStop()
+    }
+  }
 
   render () {
     const { response } = this.state
+    this.thing()
     return (
       <div style={{ position: 'relative', height: '100%' }}>
         {response
           ? <p>
             This is the response that we got back from the server: {response} :)
-          </p>
+            </p>
           : <p>Loading.....</p>}
       </div>
     )

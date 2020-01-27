@@ -1,6 +1,6 @@
 // Stream Audio
 import openSocket from 'socket.io-client'
-const socket = openSocket('http://localhost')
+const socket = openSocket('http://localhost:5000')
 
 let bufferSize = 2048;
     let AudioContext;
