@@ -5,7 +5,7 @@ import * as readline from 'readline'
 class LocalDataManagementService {
     private readonly LOCAL_STORAGE_PATH = "./models/data/"
     private readonly LOCAL_PARSED_PATH = "./models/data/parsedBooks/"
-    private epubParserService : EpubToTextService
+    private epubParserService: EpubToTextService
 
     constructor() {
         this.initializeDataFolder()

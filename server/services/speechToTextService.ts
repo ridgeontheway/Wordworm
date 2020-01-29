@@ -42,7 +42,7 @@ class SpeechToTextService{
      * Receives streaming data and writes it to the recognizeStream for transcription
      * 
      * @param {Buffer} data A section of audio data
-     */
+    */
     receiveData(data) {
         if (this.recognizeStream) {
             this.recognizeStream.write(data);
