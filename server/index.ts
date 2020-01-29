@@ -4,13 +4,18 @@ import { sessionKeys } from './config/keys'
 import cookieSession from 'cookie-session'
 import passport from 'passport'
 import cors from 'cors'
+import { createServer } from 'http'
 
 import './models/user-model'
 import './services/passport'
 
 mongoose.connect(sessionKeys.mongoURI)
 
-const app: express.Application = express()
+const PORT = process.env.PORT || 5000
+var app = require("express")();
+var http = createServer(app); 
+var io = require("socket.io").listen(http)
+
 app.use(
     // defining a cookie which lasts for 30 days
     cookieSession({
@@ -18,10 +23,12 @@ app.use(
         keys: [sessionKeys.cookieKey]
     })
 )
+
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(cors())
 
+require('./routes/socketRoutes')(io)
 require('./routes/authRoutes')(app)
 require('./routes/fileManagmentRoutes')(app)
 
@@ -35,5 +42,6 @@ if (process.env.NODE_ENV === 'production') {
 
 app.get('/google511af4de7731d787.html', (req, res) => res.sendFile('client/public/google511af4de7731d787.html', { root: './' }))
 
-const PORT = process.env.PORT || 5000
-app.listen(PORT)
+http.listen(PORT, function() {
+    console.log(`listening on *:${PORT}`);
+});
