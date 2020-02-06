@@ -1,9 +1,13 @@
 import express from 'express'
 import { s3ObjectManagementService } from '../services/s3ManagementService'
 import { localDataService } from '../services/localDataManagementService'
+import mongoose  from 'mongoose'
+import { bookProgress }  from '../models/book-progress'
+const Users = mongoose.model('Users');
+
 
 const upload = s3ObjectManagementService.getUpload();
-const singleUpload = upload.single('image')
+const singleUpload = upload.single('image') 
 
 module.exports = (app: express.Application) => {
     app.post(
@@ -38,6 +42,46 @@ module.exports = (app: express.Application) => {
                     res.send({'Requested Chapter': requestedWords})
                 })
             })
+        }
+    )
+
+    app.get(
+        '/api/set-words-read',
+        (req, res) => {
+            if (req.user && req.query.bookName && req.query.wordsRead) {
+                const bookName = req.query.bookName
+                const wordsRead1 = req.query.wordsRead
+                const userID = req.user['googleID']
+                
+                // Finding the user 
+                Users.findOne( { googleID: userID }, function (error, currentUser ) {
+                    if (error) console.log(error)
+
+                    if (currentUser) {
+                        const currentlyReading = currentUser['currentlyReading']
+
+                        console.log(typeof(currentlyReading))
+                        console.log(Object.keys(currentlyReading).length)
+
+                        // we have an empty object
+                        if (JSON.stringify(currentlyReading) === '[]') {
+                            new bookProgress({
+                                title: bookName,
+                                wordsRead: wordsRead1
+                            }).save().then(savedProgress => {
+                                currentUser['currentlyReading'].push(savedProgress)
+                                currentUser.save().then(savedUser => {
+                                    console.log(savedUser)
+                                    res.send(savedUser)
+                                })
+                            })
+                        }
+                    }
+                })
+           }
+           else {
+               // TODO: we send back some error page saying that the user is not logged in yet
+           }
         }
     )
 }
