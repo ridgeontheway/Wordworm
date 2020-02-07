@@ -3,9 +3,8 @@ import { s3ObjectManagementService } from '../services/s3ManagementService'
 import { localDataService } from '../services/localDataManagementService'
 import mongoose  from 'mongoose'
 import { bookProgress }  from '../models/book-progress'
+
 const Users = mongoose.model('Users');
-
-
 const upload = s3ObjectManagementService.getUpload();
 const singleUpload = upload.single('image') 
 
@@ -50,38 +49,40 @@ module.exports = (app: express.Application) => {
         (req, res) => {
             if (req.user && req.query.bookName && req.query.wordsRead) {
                 const bookName = req.query.bookName
-                const wordsRead1 = req.query.wordsRead
+                const updatedWordsRead = req.query.wordsRead
                 const userID = req.user['googleID']
-                
-                // Finding the user 
-                Users.findOne( { googleID: userID }, function (error, currentUser ) {
+               
+                 // Finding the user 
+                 bookProgress.findOne( { title: bookName,  userIDReading: userID  }, function (error, oldProgress ) {
                     if (error) console.log(error)
-
-                    if (currentUser) {
-                        const currentlyReading = currentUser['currentlyReading']
-
-                        console.log(typeof(currentlyReading))
-                        console.log(Object.keys(currentlyReading).length)
-
-                        // we have an empty object
-                        if (JSON.stringify(currentlyReading) === '[]') {
-                            new bookProgress({
-                                title: bookName,
-                                wordsRead: wordsRead1
-                            }).save().then(savedProgress => {
-                                currentUser['currentlyReading'].push(savedProgress)
-                                currentUser.save().then(savedUser => {
-                                    console.log(savedUser)
-                                    res.send(savedUser)
-                                })
-                            })
-                        }
+                    if (oldProgress) {
+                        console.log('we did find a book progression')
+                        oldProgress['wordsRead'] = updatedWordsRead
+                        oldProgress.save().then(updatedBookProgress => {
+                            res.send(updatedBookProgress)
+                        })
                     }
-                })
-           }
-           else {
-               // TODO: we send back some error page saying that the user is not logged in yet
-           }
+                    else {
+                        console.log('we DID NOT find a book here')
+                       Users.findOne( { googleID: userID }, function (error, currentUser ) {
+                           if (error) console.log(error)
+                           if (currentUser) {
+                               // we have an empty object
+                               new bookProgress({
+                                   title: bookName,
+                                   wordsRead: updatedWordsRead,
+                                   userIDReading: userID
+                               }).save().then(savedProgress => {
+                                   currentUser['currentlyReading'].push(savedProgress)
+                                   currentUser.save().then(savedUser => {
+                                       res.send(savedUser)
+                                   })
+                                })
+                           }
+                       })
+                    }
+                 })
+            }
         }
     )
 }
