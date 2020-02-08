@@ -1,5 +1,4 @@
 import { speechToTextService } from '../services/speechToTextService'
-
 module.exports = (io: SocketIO.Server) => {
     io.on('connection', function (socket) {
         console.log('user has connected!')

@@ -1,13 +1,13 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import { sessionKeys } from './config/keys'
+import { createServer } from 'http'
 import cookieSession from 'cookie-session'
 import passport from 'passport'
 import cors from 'cors'
-import { createServer } from 'http'
 
 import './models/user-model'
-import './services/passport'
+import './services/passportService'
 
 mongoose.connect(sessionKeys.mongoURI)
 

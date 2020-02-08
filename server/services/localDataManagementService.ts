@@ -39,8 +39,7 @@ class LocalDataManagementService {
             }
             return wordsSelectedFromLocations
     }
-
-    private getParsedFilesForBook(fileName: string) {
+        private getParsedFilesForBook(fileName: string) {
         var strippedFileName = fileName.split('.').shift()
         var parsedBookLocations: Array<string> = new Array
         var files = fs.readdirSync(this.LOCAL_PARSED_PATH)
