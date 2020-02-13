@@ -10,13 +10,22 @@ class Keys {
   public AWSBucketName: string;
 
   constructor() {
-    var importedModule: { googleClientID: string; googleClientSecret: string; mongoURI: string; cookieKey: string; googleCallBackURL: string; logInRedirectURL: string, AWSAccessKeyId: string, AWSSecretKey: string, AWSBucketName: string };
+    var importedModule: {
+      googleClientID: string;
+      googleClientSecret: string;
+      mongoURI: string;
+      cookieKey: string;
+      googleCallBackURL: string;
+      logInRedirectURL: string;
+      AWSAccessKeyId: string;
+      AWSSecretKey: string;
+      AWSBucketName: string;
+    };
 
-    if(process.env.NODE_ENV === 'production'){
-      importedModule = require('./prod')
-    }
-    else {
-      importedModule = require('./dev')
+    if (process.env.NODE_ENV === "production") {
+      importedModule = require("./prod");
+    } else {
+      importedModule = require("./dev");
     }
 
     this.googleClientID = importedModule.googleClientID!;
@@ -30,4 +39,4 @@ class Keys {
     this.AWSBucketName = importedModule.AWSBucketName!;
   }
 }
-export const sessionKeys = new Keys()
+export const sessionKeys = new Keys();
