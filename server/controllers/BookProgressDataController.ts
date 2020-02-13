@@ -1,5 +1,5 @@
-import BookProgressionService from "../../../app/services/data/BookProgressionService";
-import { IBookProgression } from "../../../app/models/interfaces/IBookProgression";
+import BookProgressionService from "../app/services/BookProgressionService";
+import { IBookProgression } from "../app/models/interfaces/IBookProgression";
 import BaseDataController from "./base/BaseDataController";
 
 class BookProgressController

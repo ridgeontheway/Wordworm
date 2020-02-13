@@ -1,5 +1,5 @@
 import express from "express";
-import { controller as bookController } from "../controllers/bookController";
+import { controller as multimediaDataController } from "../../controllers/MultimediaDataController";
 
 function parseWordRetrievalParameters(reqParams: string[]) {
   const fileNameStr = reqParams[0];
@@ -22,7 +22,7 @@ function parseWordRetrievalParameters(reqParams: string[]) {
 
 module.exports = (app: express.Application) => {
   app.post("/api/file-upload", (req, res) => {
-    return res.json(bookController.bookUpload(req, res, "image"));
+    return res.json(multimediaDataController.bookUpload(req, res, "image"));
   });
 
   app.get("/api/word-retrieval/:info", (req, res) => {
@@ -30,7 +30,7 @@ module.exports = (app: express.Application) => {
       req.params.info.split(",")
     );
     res.send(
-      bookController.retrieveWords(
+      multimediaDataController.retrieveWords(
         convertedParams["FileName"],
         convertedParams["StartWord"],
         convertedParams["IncrementValue"]
@@ -39,7 +39,7 @@ module.exports = (app: express.Application) => {
   });
 
   app.post("/api/file-upload", (req, res) => {
-    return res.json(bookController.bookUpload(req, res, "image"));
+    return res.json(multimediaDataController.bookUpload(req, res, "image"));
   });
 
   app.get("/api/word-retrieval/:info", (req, res) => {
@@ -47,7 +47,7 @@ module.exports = (app: express.Application) => {
       req.params.info.split(",")
     );
     res.send(
-      bookController.retrieveWords(
+      multimediaDataController.retrieveWords(
         convertedParams["FileName"],
         convertedParams["StartWord"],
         convertedParams["IncrementValue"]

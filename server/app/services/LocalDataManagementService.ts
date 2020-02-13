@@ -1,8 +1,9 @@
 import fs from "fs";
-import EpubToTextService from "./epubToTextService";
+import EpubToTextService from "./EpubToTextService";
 import * as readline from "readline";
+import { ILocalDataService } from "./interfaces/ILocalDataService";
 
-export default class LocalDataManagementService {
+export default class LocalDataManagementService implements ILocalDataService {
   private readonly LOCAL_STORAGE_PATH = "./localData/";
   private readonly LOCAL_PARSED_PATH = "./localData/parsedBooks/";
   private epubParserService: EpubToTextService;
@@ -12,7 +13,7 @@ export default class LocalDataManagementService {
     this.epubParserService = new EpubToTextService();
   }
 
-  getLocalStoragePath() {
+  getLocalStoragePath(): string {
     return this.LOCAL_STORAGE_PATH;
   }
 

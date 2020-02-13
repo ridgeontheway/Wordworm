@@ -1,7 +1,7 @@
-import S3ManagementService from "../../app/services/s3ManagementService";
-import LocalDataManagementService from "../../app/services/localDataManagementService";
+import S3ManagementService from "../app/services/S3ManagementService";
+import LocalDataManagementService from "../app/services/LocalDataManagementService";
 
-class bookController {
+class MultimediaController {
   private downloadedDataService: LocalDataManagementService;
   private cloudDataService: S3ManagementService;
 
@@ -25,10 +25,7 @@ class bookController {
     incrementValue: number
   ) {
     this.cloudDataService
-      .getObjectFromS3(
-        fileName,
-        this.downloadedDataService.getLocalStoragePath()
-      )
+      .getObject(fileName, this.downloadedDataService.getLocalStoragePath())
       .then(() => {
         this.downloadedDataService
           .getRequestedWords(fileName, startWordNumber, incrementValue)
@@ -39,4 +36,4 @@ class bookController {
   }
 }
 
-export const controller = new bookController();
+export const controller = new MultimediaController();

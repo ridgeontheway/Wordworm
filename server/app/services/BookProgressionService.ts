@@ -1,6 +1,6 @@
-import { default as BookProgressRepository } from "../../repositories/BookProgressRepository";
-import { IBookProgressionService } from "../interfaces/IBookProgressionService";
-import { IBookProgression } from "../../models/interfaces/IBookProgression";
+import { default as BookProgressRepository } from "../repositories/BookProgressRepository";
+import { IBookProgressionService } from "./interfaces/IBookProgressionService";
+import { IBookProgression } from "../models/interfaces/IBookProgression";
 
 class BookProgressionService implements IBookProgressionService {
   private _bookProgressionRepository: BookProgressRepository;

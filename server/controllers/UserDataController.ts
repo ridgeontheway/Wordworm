@@ -1,5 +1,5 @@
-import UserService from "../../../app/services/data/UserService";
-import { IUserModel } from "../../../app/models/interfaces/IUserModel";
+import UserService from "../app/services/UserService";
+import { IUserModel } from "../app/models/interfaces/IUserModel";
 import BaseDataController from "./base/BaseDataController";
 
 class UserController implements BaseDataController<UserService> {

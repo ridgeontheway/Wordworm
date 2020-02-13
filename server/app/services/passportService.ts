@@ -1,7 +1,7 @@
 // will handle all the passport configuration for our project
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { controller as UserDataController } from "../../config/controllers/dataControllers/UserControllers";
+import { controller as UserDataController } from "../../controllers/UserDataController";
 import { sessionKeys } from "../../config/sessionKeys/keys";
 
 passport.serializeUser<any, any>((user, done) => {

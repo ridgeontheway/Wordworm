@@ -1,6 +1,6 @@
 import express from "express";
-import { controller as bookDataController } from "../controllers/dataControllers/BookProgressController";
-import { controller as userDataController } from "../controllers/dataControllers/UserControllers";
+import { controller as bookDataController } from "../../controllers/BookProgressDataController";
+import { controller as userDataController } from "../../controllers/UserDataController";
 
 module.exports = (app: express.Application) => {
   app.post("/api/create-book-progress", (req, res) => {

@@ -9,17 +9,17 @@
     "dev": "concurrently \"npm run server-dev\" \"npm run client\"",
     "server-dev": "nodemon index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "lint-staged"
+    "lint": "lint-staged && npm run lint --prefix client"
   },
   "lint-staged": {
-      "*.js": [
-        "prettier --write",
-        "git add"
-      ],
-      "*.ts": [
-        "prettier --write",
-        "git add"
-      ]
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.ts": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -82,6 +82,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "nodemon": "^2.0.2",
     "pre-commit": "^1.2.2",
     "prettier": "1.19.1",
     "prettier-config-standard": "^1.0.1"

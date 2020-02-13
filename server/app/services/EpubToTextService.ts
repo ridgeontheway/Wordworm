@@ -1,4 +1,3 @@
-// Refactored from (https://github.com/Projet-TAMIS/epub-to-text)
 import fs from "fs";
 import EPub from "epub";
 import htmlToText from "html-to-text";

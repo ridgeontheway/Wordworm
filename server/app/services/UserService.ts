@@ -1,6 +1,6 @@
-import { default as UserRepository } from "../../repositories/UserRepository";
-import { IUserService } from "../interfaces/IUserService";
-import { IUserModel } from "../../models/interfaces/IUserModel";
+import { default as UserRepository } from "../repositories/UserRepository";
+import { IUserService } from "./interfaces/IUserService";
+import { IUserModel } from "../models/interfaces/IUserModel";
 
 class UserService implements IUserService {
   private _userRepository: UserRepository;

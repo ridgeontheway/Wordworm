@@ -1,6 +1,7 @@
 import { SpeechClient } from "@google-cloud/speech";
+import { ISpeechService } from "./interfaces/ISpeechService";
 
-export default class SpeechToTextService {
+export default class SpeechToTextService implements ISpeechService {
   private speechClient;
   private recognizeStream;
 

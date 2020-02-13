@@ -3,8 +3,9 @@ import multer from "multer";
 import multerS3 from "multer-s3";
 import fs from "fs";
 import { sessionKeys } from "../../config/sessionKeys/keys";
+import { IS3DataService } from "./interfaces/IS3DataService";
 
-export default class S3ManagementService {
+export default class S3ManagementService implements IS3DataService {
   public s3: aws.S3;
   public multerObj: multer.Instance;
 
@@ -18,7 +19,7 @@ export default class S3ManagementService {
     return this.multerObj;
   }
 
-  getObjectFromS3(key: string, destPath: string) {
+  getObject(key: string, destPath: string) {
     return new Promise((resolve, reject) => {
       const params = {
         Bucket: sessionKeys.AWSBucketName,

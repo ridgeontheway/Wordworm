@@ -4,7 +4,7 @@
     "scripts": {
         "start": "npm run start --prefix server",
         "heroku-postbuild": "npm run build-for-deployment --prefix server",
-        "pre-commit": "npm run lint --prefix server && npm run lint --prefix client"
+        "pre-commit": "npm run lint --prefix server"
     },
     "pre-commit": [
         "pre-commit"

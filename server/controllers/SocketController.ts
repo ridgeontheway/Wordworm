@@ -1,4 +1,4 @@
-import SpeechToTextService from "../../app/services/speechToTextService";
+import SpeechToTextService from "../app/services/SpeechToTextService";
 
 class socketController {
   private speechService: SpeechToTextService;
