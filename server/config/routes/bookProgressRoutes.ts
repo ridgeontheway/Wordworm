@@ -3,17 +3,6 @@ import { controller as bookDataController } from "../../controllers/BookProgress
 import { controller as userDataController } from "../../controllers/UserDataController";
 
 module.exports = (app: express.Application) => {
-  app.post("/api/create-book-progress", (req, res) => {
-    if (req.user && req.query.bookName) {
-      const bookName: string = req.query.bookName;
-      const userID: string = req.user["googleID"];
-      bookDataController.create(bookName, 0, userID, (error, result) => {
-        if (error) console.error(error);
-        if (result) res.send(result);
-      });
-    }
-  });
-
   app.get("/api/retrieve-book-progress", (req, res) => {
     if (req.user && req.query.bookName) {
       const bookName: string = req.query.bookName;
@@ -61,7 +50,7 @@ module.exports = (app: express.Application) => {
         (error, newBookProgress) => {
           if (error) console.error(error);
           if (newBookProgress) {
-            //Adding the book progress to the user
+            // Adding the book progress to the user
             const bookProgressSchemaID = newBookProgress._id;
             userDataController.update(
               userID,

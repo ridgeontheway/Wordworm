@@ -1,0 +1,71 @@
+.main__container {
+  min-height: 100vh;
+  margin: 0;
+  background: #048ccc;
+  background: linear-gradient(to bottom, #048ccc 0%, #04528d 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.screen__container {
+  padding: 20px;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 80%;
+}
+
+.content__container {
+  padding: 20px;
+  background-color: #04528d;
+  border-radius: 25px;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.library-card__container {
+  margin-bottom: 20px;
+}
+
+.button__container {
+  align-self: center;
+}
+
+.title__container {
+  align-self: center;
+  margin-bottom: 20px;
+}
+
+.icon__container {
+  background-color: #04528d;
+  padding: 0.9em;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.library-card__container:hover {
+  transform: scale(1.02);
+  transition: all 175ms ease-in-out;
+}
+
+@keyframes expand {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.02);
+  }
+}
