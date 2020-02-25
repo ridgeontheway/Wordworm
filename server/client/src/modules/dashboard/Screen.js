@@ -9,7 +9,6 @@ import { TOP_ICON } from "../../constants/iconSize";
 
 import "../styles.css";
 
-//TODO: replace the logout card with a circular button
 export default class Screen extends Component {
   componentDidMount() {
     document.title = this.props.documentTitle;

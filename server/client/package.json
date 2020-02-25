@@ -30,7 +30,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier-standard --lint",
+      "prettier --write",
       "git add"
     ]
   },

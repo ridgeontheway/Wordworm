@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import * as actions from "../actions";
 import Book from "../components/Book";
 import DashboardScreen from "./dashboard";
+import LoginScreen from "./login";
 
 // this file represents all the top most app - view setup
 class App extends Component {
@@ -17,7 +18,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <DashboardScreen />
+        <LoginScreen />
       </div>
     );
   }
