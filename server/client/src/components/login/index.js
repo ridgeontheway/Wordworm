@@ -4,6 +4,7 @@ import { FaMicrophone, FaCloud, FaDatabase } from "react-icons/fa";
 import { SIGN_IN_ICON } from "../../constants/iconSize";
 import PropTypes from "prop-types";
 import "./styles.css";
+import "../styles.css";
 export default class Login extends Component {
   render() {
     return (

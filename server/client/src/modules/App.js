@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Header from "../components/Header";
@@ -7,6 +7,7 @@ import * as actions from "../actions";
 import Book from "../components/Book";
 import DashboardScreen from "./dashboard";
 import LoginScreen from "./login";
+import UploadScreen from "./upload";
 
 // this file represents all the top most app - view setup
 class App extends Component {
@@ -17,9 +18,12 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <LoginScreen />
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={LoginScreen} />
+          <Route exact path="/dashboard" component={DashboardScreen} />
+        </Switch>
+      </Router>
     );
   }
 }

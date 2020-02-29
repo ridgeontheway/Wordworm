@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { IconContext } from "react-icons";
 import { FaUserPlus } from "react-icons/fa";
+import { connect } from "react-redux";
 import { TOP_ICON } from "../../constants/iconSize";
 import SignInButton from "../../components/button/sign-in";
 import Login from "../../components/login";
@@ -9,7 +10,20 @@ import Login from "../../components/login";
 import "../styles.css";
 import "./styles.css";
 
-export default class Screen extends Component {
+class Screen extends Component {
+  constructor(props) {
+    super(props);
+    this.redirectBasedOnState();
+  }
+
+  redirectBasedOnState() {
+    switch (this.props.auth) {
+      case null || false:
+        return;
+      default:
+        this.props.handleSignIn();
+    }
+  }
   render() {
     return (
       <div className="screen__container">
@@ -42,7 +56,7 @@ export default class Screen extends Component {
               />
             </div>
             <div className="sign-in__theme">
-              <SignInButton />
+              <SignInButton onSignIn={this.props.OAUTHFlow} />
             </div>
           </div>
         </div>
@@ -51,11 +65,18 @@ export default class Screen extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return { auth: state.auth };
+}
+
 Screen.propTypes = {
   loginMicrophoneTitle: PropTypes.string.isRequired,
   loginMicrophoneDescription: PropTypes.string.isRequired,
   loginCloudTitle: PropTypes.string.isRequired,
   loginCloudDescription: PropTypes.string.isRequired,
   loginDBTitle: PropTypes.string.isRequired,
-  loginDbDescription: PropTypes.string.isRequired
+  loginDbDescription: PropTypes.string.isRequired,
+  OAUTHFlow: PropTypes.string.isRequired
 };
+
+export default connect(mapStateToProps)(Screen);

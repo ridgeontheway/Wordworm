@@ -8,5 +8,8 @@
     },
     "pre-commit": [
         "pre-commit"
-    ]
+    ],
+    "devDependencies": {
+        "pre-commit": "^1.2.2"
+    }
 }
