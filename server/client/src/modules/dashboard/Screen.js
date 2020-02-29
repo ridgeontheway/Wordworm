@@ -34,10 +34,16 @@ export default class Screen extends Component {
         </div>
         <div className="content__container">
           <div className="library-card__container">
-            <LibraryCardComponent text={this.props.libraryText} />
+            <LibraryCardComponent
+              text={this.props.libraryText}
+              onPress={this.props.handleLibrary}
+            />
           </div>
           <div className="library-card__container">
-            <UploadCardComponent text={this.props.uploadText} />
+            <UploadCardComponent
+              text={this.props.uploadText}
+              onPress={this.props.handleSaveBook}
+            />
           </div>
           <div className="button__container">
             <LogoutButton />
@@ -51,5 +57,7 @@ export default class Screen extends Component {
 Screen.propTypes = {
   libraryText: PropTypes.string.isRequired,
   uploadText: PropTypes.string.isRequired,
-  documentTitle: PropTypes.string.isRequired
+  documentTitle: PropTypes.string.isRequired,
+  handleSaveBook: PropTypes.func.isRequired,
+  handleLibrary: PropTypes.func.isRequired
 };

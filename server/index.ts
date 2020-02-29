@@ -26,6 +26,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
+app.use(express.json());
 
 require("./config/routes/authRoutes")(app);
 require("./config/routes/bookProgressRoutes")(app);

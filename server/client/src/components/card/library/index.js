@@ -9,7 +9,7 @@ import "../styles.css";
 export default class LibraryCardComponent extends Component {
   render() {
     return (
-      <Card>
+      <Card onClick={this.props.onPress}>
         <Card.Body className="card__body">
           <div className="card__wrap">
             <div>
@@ -38,5 +38,6 @@ export default class LibraryCardComponent extends Component {
 }
 
 LibraryCardComponent.propTypes = {
-  text: PropTypes.string.isRequired
+  text: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired
 };

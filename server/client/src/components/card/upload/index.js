@@ -10,7 +10,7 @@ import "../../styles.css";
 export default class UploadCardComponent extends Component {
   render() {
     return (
-      <Card>
+      <Card onClick={this.props.onPress}>
         <Card.Body>
           <div className="card__wrap">
             <div>
@@ -39,5 +39,6 @@ export default class UploadCardComponent extends Component {
 }
 
 UploadCardComponent.propTypes = {
-  text: PropTypes.string.isRequired
+  text: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired
 };

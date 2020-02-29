@@ -60,7 +60,7 @@ export default class S3ManagementService implements IS3DataService {
           cb(null, { fieldName: "TESTING_META_DATA!" });
         },
         key: function(req, file, cb) {
-          console.log(file);
+          console.log("this is the file that I am getting = ", file);
           cb(null, file.originalname);
         },
         acl: "public-read"

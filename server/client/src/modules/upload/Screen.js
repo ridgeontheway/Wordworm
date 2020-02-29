@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { IconContext } from "react-icons";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import PropTypes from "prop-types";
 import { TOP_ICON } from "../../constants/iconSize";
 import Upload from "../../components/upload";
 import "./styles.css";
@@ -28,7 +29,7 @@ export default class Screen extends Component {
         <div className="content__container">
           <div className="content__wrapper">
             <div className="login__container">
-              <Upload />
+              <Upload onSubmit={this.props.handleFormSubmit} />
             </div>
           </div>
         </div>
@@ -36,3 +37,7 @@ export default class Screen extends Component {
     );
   }
 }
+
+Screen.propTypes = {
+  handleFormSubmit: PropTypes.func.isRequired
+};

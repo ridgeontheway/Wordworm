@@ -22,6 +22,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={LoginScreen} />
           <Route exact path="/dashboard" component={DashboardScreen} />
+          <Route exact path="/upload" component={UploadScreen} />
         </Switch>
       </Router>
     );

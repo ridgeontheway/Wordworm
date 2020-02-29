@@ -22,6 +22,7 @@ function parseWordRetrievalParameters(reqParams: string[]) {
 
 module.exports = (app: express.Application) => {
   app.post("/api/file-upload", (req, res) => {
+    console.log("this is the body = ", req.body);
     return res.json(multimediaDataController.bookUpload(req, res, "image"));
   });
 

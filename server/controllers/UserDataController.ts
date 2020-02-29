@@ -41,7 +41,6 @@ class UserController implements BaseDataController<UserService> {
     }
   }
 
-  // TODO: change in the abstraction, we should be overriding the default implementation to be looking at the googleID not the documentID
   delete() {}
 
   findById(_id: string, callback: (error: any, result: any) => void) {

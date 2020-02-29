@@ -14,6 +14,7 @@ class MultimediaController {
   bookUpload(req, res, parameter: string) {
     const uploadInstance = this.cloudDataService.getUpload().single(parameter);
     uploadInstance(req, res, err => {
+      if (err) console.error(err);
       return { fileURL: req.file.location };
     });
   }
