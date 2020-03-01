@@ -4,10 +4,9 @@ import { controller as userDataController } from "../../controllers/UserDataCont
 
 module.exports = (app: express.Application) => {
   app.get("/api/retrieve-book-progress", (req, res) => {
-    if (req.user && req.query.bookName) {
-      const bookName: string = req.query.bookName;
-      const userID: string = req.user["googleID"];
-      bookDataController.retrieve(bookName, userID, (error, result) => {
+    if (req.user && req.query.id) {
+      const _id = req.query.id;
+      bookDataController.findById(_id, (error, result) => {
         if (error) console.error(error);
         if (result) res.send(result);
       });
@@ -40,6 +39,7 @@ module.exports = (app: express.Application) => {
   });
 
   app.get("/api/create-book-progress", (req, res) => {
+    console.log("am i here??");
     if (req.user && req.query.bookName) {
       const bookName: string = req.query.bookName;
       const userID: string = req.user["googleID"];

@@ -17,11 +17,9 @@ class Screen extends Component {
   }
 
   redirectBasedOnState() {
-    switch (this.props.auth) {
-      case null || false:
-        return;
-      default:
-        this.props.handleSignIn();
+    if (!this.props.auth) {
+      console.log("this is the data I am getting back = ", this.props.auth);
+      this.props.handleSignIn();
     }
   }
   render() {

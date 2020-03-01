@@ -8,6 +8,7 @@ import Book from "../components/Book";
 import DashboardScreen from "./dashboard";
 import LoginScreen from "./login";
 import UploadScreen from "./upload";
+import LibraryScreen from "./library";
 
 // this file represents all the top most app - view setup
 class App extends Component {
@@ -23,6 +24,7 @@ class App extends Component {
           <Route exact path="/" component={LoginScreen} />
           <Route exact path="/dashboard" component={DashboardScreen} />
           <Route exact path="/upload" component={UploadScreen} />
+          <Route exact path="/library" component={LibraryScreen} />
         </Switch>
       </Router>
     );

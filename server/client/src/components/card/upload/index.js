@@ -40,5 +40,5 @@ export default class UploadCardComponent extends Component {
 
 UploadCardComponent.propTypes = {
   text: PropTypes.string.isRequired,
-  onPress: PropTypes.func.isRequired
+  onPress: PropTypes.func
 };
