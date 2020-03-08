@@ -7,6 +7,7 @@
     "build-for-deployment": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm install && npm run build --prefix client",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server-dev\" \"npm run client\"",
+    "debug": "nodemon --inspect ./index.ts --ignore public",
     "server-dev": "nodemon index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "lint-staged && npm run lint --prefix client"
