@@ -1,5 +1,5 @@
 import express from 'express'
-import { controller as multimediaDataController } from '../../controllers/MultimediaDataController'
+import { controller as bookDataController } from '../../controllers/BookDataController'
 
 function parseWordRetrievalParameters(reqParams: string[]) {
   const fileNameStr = reqParams[0]
@@ -22,7 +22,7 @@ function parseWordRetrievalParameters(reqParams: string[]) {
 
 module.exports = (app: express.Application) => {
   app.post('/api/file-upload', (req, res) => {
-    multimediaDataController.bookUpload(req, res)
+    bookDataController.create(req, res)
   })
 
   app.get('/api/word-retrieval/:info', (req, res) => {
@@ -30,20 +30,7 @@ module.exports = (app: express.Application) => {
       req.params.info.split(',')
     )
     res.send(
-      multimediaDataController.retrieveWords(
-        convertedParams['FileName'],
-        convertedParams['StartWord'],
-        convertedParams['IncrementValue']
-      )
-    )
-  })
-
-  app.get('/api/word-retrieval/:info', (req, res) => {
-    const convertedParams = parseWordRetrievalParameters(
-      req.params.info.split(',')
-    )
-    res.send(
-      multimediaDataController.retrieveWords(
+      bookDataController.retrieveWords(
         convertedParams['FileName'],
         convertedParams['StartWord'],
         convertedParams['IncrementValue']

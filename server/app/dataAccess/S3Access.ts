@@ -2,16 +2,16 @@ import aws from 'aws-sdk'
 import multer from 'multer'
 import multerS3 from 'multer-s3'
 import fs from 'fs'
-import { sessionKeys } from '../../config/sessionKeys/keys'
 import path from 'path'
+import { sessionKeys } from '../../config/sessionKeys/keys'
 
-export default class S3ManagementService {
+export default class S3Access {
   public s3: aws.S3
-  public multerObj
+  public objectRequestHandler
 
   constructor() {
     this.s3 = this.configureBucket()
-    this.multerObj = this.configureMulter()
+    this.objectRequestHandler = this.configureMulter()
   }
 
   configureBucket() {
@@ -50,7 +50,7 @@ export default class S3ManagementService {
     return upload
   }
 
-  create(req, res, callback: (error: any) => void) {
-    this.multerObj(req, res, callback)
+  uploadObject(req, res, callback: (error: any) => void) {
+    this.objectRequestHandler(req, res, callback)
   }
 }
