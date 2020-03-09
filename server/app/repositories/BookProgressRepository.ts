@@ -29,6 +29,8 @@ class BookProgressRepository extends BaseRepository<IBookProgression> {
     _userIDReading: string,
     callback: (error: any, result: IBookProgression) => void
   ) {
+    console.log("this is the booktitle", bookTitle);
+    console.log("this is the title", _userIDReading);
     this._model.findOne(
       { title: bookTitle, userIDReading: _userIDReading },
       callback

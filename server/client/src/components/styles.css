@@ -1,0 +1,31 @@
+.text__body {
+  margin-top: 0em !important;
+  margin-bottom: 0em !important;
+  padding-top: 0.07em;
+  font-size: x-large;
+}
+
+.text-medium__body {
+  margin-top: 0em !important;
+  margin-bottom: 0em !important;
+  padding-top: 0.07em;
+  margin-left: 0.7em;
+  font-size: medium;
+}
+
+.text__theme {
+  color: #5f6a7d !important;
+  text-align: center;
+}
+
+.title__theme {
+  font-weight: 300;
+  color: #2e3b4e;
+}
+
+.subcard__heading {
+  padding-top: 0.5em;
+  color: #2e3b4e !important;
+  font-weight: 600 !important;
+  text-align: center;
+}

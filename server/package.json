@@ -1,12 +1,14 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "prettier": "prettier-config-standard",
   "description": "",
   "scripts": {
     "start": "ts-node index.ts",
     "build-for-deployment": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm install && npm run build --prefix client",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server-dev\" \"npm run client\"",
+    "debug": "nodemon --inspect ./index.ts --ignore public",
     "server-dev": "nodemon index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "lint-staged && npm run lint --prefix client"
@@ -40,7 +42,8 @@
     "@types/passport": "^1.0.1",
     "@types/passport-google-oauth20": "^2.0.2",
     "@types/socket.io": "^2.1.4",
-    "aws-sdk": "^2.601.0",
+    "aws-sdk": "^2.635.0",
+    "body-parser": "^1.19.0",
     "concurrently": "^5.0.2",
     "cookie-session": "^1.3.3",
     "cors": "^2.8.5",
@@ -53,9 +56,11 @@
     "node-html-parser": "^1.1.18",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^2.0.0",
+    "path": "^0.12.7",
     "socket.io": "^2.3.0",
     "ts-node": "^8.6.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",

@@ -1,12 +1,16 @@
 {
-    "name": "foobar-app",
-    "version": "0.1.0",
-    "scripts": {
-        "start": "npm run start --prefix server",
-        "heroku-postbuild": "npm run build-for-deployment --prefix server",
-        "pre-commit": "npm run lint --prefix server"
-    },
-    "pre-commit": [
-        "pre-commit"
-    ]
+  "name": "foobar-app",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "npm run start --prefix server",
+    "heroku-postbuild": "npm run build-for-deployment --prefix server",
+    "pre-commit": "npm run lint --prefix server",
+    "debugAPI": " npm run debug --prefix server"
+  },
+  "pre-commit": [
+    "pre-commit"
+  ],
+  "devDependencies": {
+    "pre-commit": "^1.2.2"
+  }
 }
