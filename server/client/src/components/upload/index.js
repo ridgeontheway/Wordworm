@@ -1,41 +1,46 @@
-import React, { Component } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import PropTypes from "prop-types";
-import ChooseFileButton from "../../components/button/choose-file";
-import "./styles.css";
-import "../styles.css";
+import React, { Component } from 'react'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import PropTypes from 'prop-types'
+import ChooseFileButton from '../../components/button/choose-file'
+import './styles.css'
+import '../styles.css'
 
 export default class Upload extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
-      selectedFile: "null"
-    };
+      selectedFile: 'null'
+    }
   }
   async handleOnClick(event) {
-    event.preventDefault();
+    event.preventDefault()
+    const formData = new FormData()
 
-    console.log("this is what we are doing = ", this.state.selectedFile);
-
-    const formData = new FormData();
-    formData.append("image", this.state.selectedFile);
-
-    this.props.onSubmit(formData);
+    if (this.state.selectedFile) {
+      formData.append(
+        'book',
+        this.state.selectedFile,
+        this.state.selectedFile.name
+      )
+      this.props.onSubmit(formData)
+    } else {
+      alert('Please select a file before uploading :)')
+    }
   }
   onChange(event) {
-    const files = event.target.files;
+    const files = event.target.files
     this.setState(
       {
         selectedFile: files[0]
       },
       () => {
         console.log(
-          "I have now saved the file to state:",
+          'I have now saved the file to state:',
           this.state.selectedFile
-        );
+        )
       }
-    );
+    )
   }
   render() {
     return (
@@ -49,9 +54,8 @@ export default class Upload extends Component {
         <div className="upload-form__wrap">
           <Form
             onSubmit={e => {
-              this.handleOnClick(e);
-            }}
-          >
+              this.handleOnClick(e)
+            }}>
             <Form.Group>
               <label htmlFor="fileUpload" className="custom-file-upload">
                 <div className="upload-form__container">
@@ -75,10 +79,10 @@ export default class Upload extends Component {
           </Form>
         </div>
       </div>
-    );
+    )
   }
 }
 
 Upload.propTypes = {
   onSubmit: PropTypes.func.isRequired
-};
+}

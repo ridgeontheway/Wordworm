@@ -1,20 +1,19 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { Component } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-import Header from "../components/Header";
-import * as actions from "../actions";
-import Book from "../components/Book";
-import DashboardScreen from "./dashboard";
-import LoginScreen from "./login";
-import UploadScreen from "./upload";
-import LibraryScreen from "./library";
+import Header from '../components/Header'
+import * as actions from '../actions'
+import DashboardScreen from './dashboard'
+import LoginScreen from './login'
+import UploadScreen from './upload'
+import LibraryScreen from './library'
 
 // this file represents all the top most app - view setup
 class App extends Component {
   // the location that the initial ajax requests will be located in
   componentDidMount() {
-    this.props.fetchUser();
+    this.props.fetchUser()
   }
 
   render() {
@@ -27,8 +26,8 @@ class App extends Component {
           <Route exact path="/library" component={LibraryScreen} />
         </Switch>
       </Router>
-    );
+    )
   }
 }
 
-export default connect(null, actions)(App);
+export default connect(null, actions)(App)

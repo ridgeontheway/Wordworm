@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { IconContext } from "react-icons";
-import { FaUserPlus } from "react-icons/fa";
-import { connect } from "react-redux";
-import { TOP_ICON } from "../../constants/iconSize";
-import SignInButton from "../../components/button/sign-in";
-import Login from "../../components/login";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { IconContext } from 'react-icons'
+import { FaUserPlus } from 'react-icons/fa'
+import { connect } from 'react-redux'
+import { TOP_ICON } from '../../constants/iconSize'
+import SignInButton from '../../components/button/sign-in'
+import Login from '../../components/login'
 
-import "../styles.css";
-import "./styles.css";
+import '../styles.css'
+import './styles.css'
 
 class Screen extends Component {
   constructor(props) {
-    super(props);
-    this.redirectBasedOnState();
+    super(props)
+    this.redirectBasedOnState()
   }
 
   redirectBasedOnState() {
-    if (!this.props.auth) {
-      console.log("this is the data I am getting back = ", this.props.auth);
-      this.props.handleSignIn();
+    if (this.props.auth) {
+      console.log('this is the data I am getting back = ', this.props.auth)
+      this.props.handleSignIn()
     }
   }
   render() {
@@ -30,10 +30,9 @@ class Screen extends Component {
             <div>
               <IconContext.Provider
                 value={{
-                  color: "white",
+                  color: 'white',
                   size: TOP_ICON
-                }}
-              >
+                }}>
                 <div>
                   <FaUserPlus />
                 </div>
@@ -59,12 +58,12 @@ class Screen extends Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
-  return { auth: state.auth };
+  return { auth: state.auth }
 }
 
 Screen.propTypes = {
@@ -75,6 +74,6 @@ Screen.propTypes = {
   loginDBTitle: PropTypes.string.isRequired,
   loginDbDescription: PropTypes.string.isRequired,
   OAUTHFlow: PropTypes.string.isRequired
-};
+}
 
-export default connect(mapStateToProps)(Screen);
+export default connect(mapStateToProps)(Screen)
