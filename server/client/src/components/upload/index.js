@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { IconContext } from 'react-icons'
+import { FaCloud } from 'react-icons/fa'
+import ChooseFileButton from '../button/choose-file'
 import PropTypes from 'prop-types'
-import ChooseFileButton from '../../components/button/choose-file'
 import './styles.css'
 import '../styles.css'
 
@@ -10,7 +12,7 @@ export default class Upload extends Component {
   constructor() {
     super()
     this.state = {
-      selectedFile: 'null'
+      selectedFile: null
     }
   }
   async handleOnClick(event) {
@@ -51,16 +53,35 @@ export default class Upload extends Component {
         <div>
           <p className="text__theme">store your new book in the cloud</p>
         </div>
-        <div className="upload-form__wrap">
-          <Form
-            onSubmit={e => {
-              this.handleOnClick(e)
-            }}>
+        <Form
+          onSubmit={e => {
+            this.handleOnClick(e)
+          }}>
+          <div className="upload-form__wrap">
             <Form.Group>
               <label htmlFor="fileUpload" className="custom-file-upload">
                 <div className="upload-form__container">
-                  <ChooseFileButton />
-                  <p className="text-medium__body">{this.state.fileSelected}</p>
+                  <div className="fileUploadIcon__container ">
+                    <IconContext.Provider
+                      value={{
+                        color: 'white',
+                        size: 30
+                      }}>
+                      <div>
+                        <FaCloud />
+                      </div>
+                    </IconContext.Provider>
+                  </div>
+                  <div>
+                    <p>click here to select a book from your computer</p>
+                  </div>
+                  <div>
+                    {this.state.selectedFile ? (
+                      <p className="fileChosenText__theme">
+                        file selected: {this.state.selectedFile.name}
+                      </p>
+                    ) : null}
+                  </div>
                 </div>
               </label>
               <Form.Control
@@ -73,11 +94,11 @@ export default class Upload extends Component {
                 onChange={e => this.onChange(e)}
               />
             </Form.Group>
-            <Button variant="primary" type="submit" block>
-              Sign up
-            </Button>
-          </Form>
-        </div>
+            <div className="upload-button__theme">
+              <ChooseFileButton />
+            </div>
+          </div>
+        </Form>
       </div>
     )
   }
