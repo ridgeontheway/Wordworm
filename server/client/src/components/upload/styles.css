@@ -16,6 +16,7 @@
   display: -webkit-flex; /* NEW - Chrome */
   justify-content: space-between;
   align-items: center;
+  flex-direction: column;
   flex-grow: 1;
 }
 
@@ -27,14 +28,49 @@
   justify-content: space-around;
   align-items: center;
   flex-grow: 1;
+  flex-direction: column;
 }
 
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 .custom-file-upload {
-  border: 1px solid #ccc;
+  border: 1px solid #707dfd;
+  border-radius: 2%;
   display: inline-block;
   padding: 6px 12px;
   cursor: pointer;
+  margin: 1em;
+  color: #5f6a7d;
+  text-align: center;
+}
+
+.file-selected__theme {
+  color: inherit;
+  font-style: italic;
+}
+
+.fileUploadIcon__container {
+  background-color: #707dfd;
+  border-color: #707dfd;
+  padding: 0.9em;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.custom-file-upload:hover {
+  transform: scale(1.05);
+  transition: all 175ms ease-in-out;
+  background-color: #29a521;
+  border-color: #29a521;
+  color: white;
+}
+
+.upload-button__theme {
+  align-self: center;
 }

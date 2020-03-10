@@ -1,25 +1,30 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import * as actions from "../../actions";
-import Screen from "./Screen";
-import "../styles.css";
+import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import * as actions from '../../actions'
+import Screen from './Screen'
+import '../styles.css'
 class LoginScreen extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       redirect: false
-    };
-    this.handleSignIn = this.handleSignIn.bind(this);
+    }
   }
 
   componentDidMount() {
-    this.props.fetchUser();
+    this.props.fetchUser()
   }
 
-  handleSignIn() {
-    this.setState({ redirect: true });
+  static getDerivedStateFromProps(props, state) {
+    if (props.auth) {
+      return {
+        redirect: true
+      }
+    }
+    return null
   }
+
   render() {
     return (
       <div className="main__container">
@@ -27,7 +32,7 @@ class LoginScreen extends Component {
           <Redirect
             push
             to={{
-              pathname: "/dashboard"
+              pathname: '/dashboard'
             }}
           />
         ) : (
@@ -39,12 +44,17 @@ class LoginScreen extends Component {
             loginDBTitle="Privacy first: no speech data is stored"
             loginDbDescription="..."
             handleSignIn={this.handleSignIn}
-            OAUTHFlow={"/auth/google"}
           />
         )}
       </div>
-    );
+    )
   }
 }
 
-export default connect(null, actions)(LoginScreen);
+function mapStateToProps(state) {
+  return {
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps, actions)(LoginScreen)

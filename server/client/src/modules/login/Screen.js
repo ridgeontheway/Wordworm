@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { IconContext } from 'react-icons'
 import { FaUserPlus } from 'react-icons/fa'
-import { connect } from 'react-redux'
 import { TOP_ICON } from '../../constants/iconSize'
 import SignInButton from '../../components/button/sign-in'
 import Login from '../../components/login'
@@ -10,18 +9,11 @@ import Login from '../../components/login'
 import '../styles.css'
 import './styles.css'
 
-class Screen extends Component {
+export default class Screen extends Component {
   constructor(props) {
     super(props)
-    this.redirectBasedOnState()
   }
 
-  redirectBasedOnState() {
-    if (this.props.auth) {
-      console.log('this is the data I am getting back = ', this.props.auth)
-      this.props.handleSignIn()
-    }
-  }
   render() {
     return (
       <div className="screen__container">
@@ -53,17 +45,13 @@ class Screen extends Component {
               />
             </div>
             <div className="sign-in__theme">
-              <SignInButton onSignIn={this.props.OAUTHFlow} />
+              <SignInButton />
             </div>
           </div>
         </div>
       </div>
     )
   }
-}
-
-function mapStateToProps(state) {
-  return { auth: state.auth }
 }
 
 Screen.propTypes = {
@@ -75,5 +63,3 @@ Screen.propTypes = {
   loginDbDescription: PropTypes.string.isRequired,
   OAUTHFlow: PropTypes.string.isRequired
 }
-
-export default connect(mapStateToProps)(Screen)

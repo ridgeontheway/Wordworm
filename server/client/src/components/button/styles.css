@@ -4,7 +4,7 @@
   display: -ms-flexbox; /* TWEENER - IE 10 */
   display: -webkit-flex; /* NEW - Chrome */
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
   padding: 0.15em;
 }
 
