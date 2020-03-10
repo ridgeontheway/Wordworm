@@ -1,6 +1,6 @@
 import axios from 'axios'
 import $ from 'jquery'
-import { FETCH_USER, GET_DEFAULT_BOOK_PROGRESS } from './types'
+import { FETCH_USER, GET_DEFAULT_BOOK_PROGRESS, UPLOAD_STATUS } from './types'
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user')
@@ -46,11 +46,16 @@ export const uploadBook = _formData => async dispatch => {
     data: _formData
   })
     .then(response => {
-      console.log('this is the response')
-      console.log(response)
+      const imageLocation = response.data.location
+      const uploadSuccess = imageLocation ? true : false
+      dispatch({ type: UPLOAD_STATUS, payload: uploadSuccess })
     })
     .catch(err => {
       console.log('this is an error', err)
       console.error(err)
     })
+}
+
+export const resetUploadStatus = () => async dispatch => {
+  dispatch({ type: UPLOAD_STATUS, payload: false })
 }

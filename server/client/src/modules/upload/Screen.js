@@ -1,24 +1,23 @@
-import React, { Component } from "react";
-import { IconContext } from "react-icons";
-import { FaCloudUploadAlt } from "react-icons/fa";
-import PropTypes from "prop-types";
-import { TOP_ICON } from "../../constants/iconSize";
-import Upload from "../../components/upload";
-import "./styles.css";
-import "../styles.css";
+import React, { Component } from 'react'
+import { IconContext } from 'react-icons'
+import { FaCloudUploadAlt } from 'react-icons/fa'
+import PropTypes from 'prop-types'
+import { TOP_ICON } from '../../constants/iconSize'
+import Upload from '../../components/upload'
+import './styles.css'
+import '../styles.css'
 export default class Screen extends Component {
   render() {
     return (
-      <div className="screen__container">
+      <div className="screen__container upload-content__container">
         <div className="title__container">
           <div className="icon__container">
             <div>
               <IconContext.Provider
                 value={{
-                  color: "white",
+                  color: 'white',
                   size: TOP_ICON
-                }}
-              >
+                }}>
                 <div>
                   <FaCloudUploadAlt />
                 </div>
@@ -34,10 +33,10 @@ export default class Screen extends Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
 Screen.propTypes = {
   handleFormSubmit: PropTypes.func.isRequired
-};
+}
