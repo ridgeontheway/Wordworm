@@ -34,7 +34,7 @@ export const fetchCurrentlyReading = () => async dispatch => {
   }
 }
 
-export const uploadBook = _formData => async dispatch => {
+export const uploadBook = (_formData, _fileName) => async dispatch => {
   axios({
     method: 'post',
     headers: {
@@ -48,7 +48,20 @@ export const uploadBook = _formData => async dispatch => {
     .then(response => {
       const imageLocation = response.data.location
       const uploadSuccess = imageLocation ? true : false
-      dispatch({ type: UPLOAD_STATUS, payload: uploadSuccess })
+      if (uploadSuccess) {
+        // Splitting the file-name from its extension
+        const fileName = _fileName.split('.')[0]
+        axios({
+          method: 'post',
+          url: '/api/create-book-progress?bookName=' + fileName
+        }).then(currentlyReading => {
+          console.log(
+            'this is what we are currently reading!: ',
+            currentlyReading
+          )
+          dispatch({ type: UPLOAD_STATUS, payload: uploadSuccess })
+        })
+      }
     })
     .catch(err => {
       console.log('this is an error', err)

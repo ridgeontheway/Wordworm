@@ -28,7 +28,7 @@ class Upload extends Component {
         this.state.selectedFile.name
       )
       this.setState({ uploaded: true })
-      this.props.onSubmit(formData)
+      this.props.onSubmit(formData, this.state.selectedFile.name)
     } else {
       alert('Please select a file before uploading :)')
     }
