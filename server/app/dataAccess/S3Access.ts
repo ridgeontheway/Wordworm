@@ -47,4 +47,22 @@ export default class S3Access {
   uploadObject(req, res, callback: (error: any) => void) {
     this.objectRequestHandler(req, res, callback)
   }
+
+  getObject(key: string, destPath: string) {
+    const keyWithExtension = key + '.epub'
+    return new Promise((resolve, reject) => {
+      const params = {
+        Bucket: sessionKeys.AWSBucketName,
+        Key: keyWithExtension
+      }
+
+      this.s3
+        .getObject(params)
+        .createReadStream()
+        .pipe(fs.createWriteStream(destPath + '/' + keyWithExtension))
+        .on('close', () => {
+          resolve(destPath)
+        })
+    })
+  }
 }

@@ -9,6 +9,17 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
+export const getWordsFromBook = () => async dispatch => {
+  const params = {
+    bookName: 'moby-dick',
+    startWord: '0',
+    incrementValue: '10'
+  }
+  console.log(params)
+  const res = await axios.get('/api/word-retrieval', { params })
+  console.log(res)
+}
+
 export const fetchCurrentlyReading = () => async dispatch => {
   const res = await axios.get('/api/current_user')
   const currentlyReadingDocumentID = res.data.currentlyReading
@@ -22,15 +33,6 @@ export const fetchCurrentlyReading = () => async dispatch => {
     dispatch({ type: GET_DEFAULT_BOOK_PROGRESS, payload: readingData })
   } else {
     // If there is no entry created -- we create one with a default value of (wordsRead = 0)
-    axios({
-      method: 'get',
-      url: '/api/create-book-progress?bookName=Moby%20Dick'
-    }).then(currentlyReading => {
-      var bookTitle = currentlyReading.data.title
-      var wordsRead = currentlyReading.data.wordsRead
-      const readingData = { words: wordsRead, title: bookTitle }
-      dispatch({ type: GET_DEFAULT_BOOK_PROGRESS, payload: readingData })
-    })
   }
 }
 
