@@ -29,13 +29,7 @@ export default class S3Access {
         bucket: sessionKeys.AWSBucketName,
         acl: 'public-read',
         key: (req, file, cb) => {
-          cb(
-            null,
-            path.basename(file.originalname, path.extname(file.originalname)) +
-              '-' +
-              Date.now() +
-              path.extname(file.originalname)
-          )
+          cb(null, file.originalname)
         }
       }),
       limits: { fileSize: 2000000 }, // In bytes: 2000000 bytes = 2 MB
