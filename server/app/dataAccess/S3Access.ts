@@ -29,13 +29,7 @@ export default class S3Access {
         bucket: sessionKeys.AWSBucketName,
         acl: 'public-read',
         key: (req, file, cb) => {
-          cb(
-            null,
-            path.basename(file.originalname, path.extname(file.originalname)) +
-              '-' +
-              Date.now() +
-              path.extname(file.originalname)
-          )
+          cb(null, file.originalname)
         }
       }),
       limits: { fileSize: 2000000 }, // In bytes: 2000000 bytes = 2 MB
@@ -52,5 +46,23 @@ export default class S3Access {
 
   uploadObject(req, res, callback: (error: any) => void) {
     this.objectRequestHandler(req, res, callback)
+  }
+
+  getObject(key: string, destPath: string) {
+    const keyWithExtension = key + '.epub'
+    return new Promise((resolve, reject) => {
+      const params = {
+        Bucket: sessionKeys.AWSBucketName,
+        Key: keyWithExtension
+      }
+
+      this.s3
+        .getObject(params)
+        .createReadStream()
+        .pipe(fs.createWriteStream(destPath + '/' + keyWithExtension))
+        .on('close', () => {
+          resolve(destPath)
+        })
+    })
   }
 }

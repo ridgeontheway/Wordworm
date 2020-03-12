@@ -29,8 +29,8 @@ class UploadScreen extends Component {
     return null
   }
 
-  handleBookSubmission(_formData) {
-    this.props.uploadBook(_formData)
+  handleBookSubmission(_formData, _fileName) {
+    this.props.uploadBook(_formData, _fileName)
   }
   render() {
     return (

@@ -9,6 +9,17 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
+export const getWordsFromBook = () => async dispatch => {
+  const params = {
+    bookName: 'moby-dick',
+    startWord: '0',
+    incrementValue: '10'
+  }
+  console.log(params)
+  const res = await axios.get('/api/word-retrieval', { params })
+  console.log(res)
+}
+
 export const fetchCurrentlyReading = () => async dispatch => {
   const res = await axios.get('/api/current_user')
   const currentlyReadingDocumentID = res.data.currentlyReading
@@ -22,19 +33,10 @@ export const fetchCurrentlyReading = () => async dispatch => {
     dispatch({ type: GET_DEFAULT_BOOK_PROGRESS, payload: readingData })
   } else {
     // If there is no entry created -- we create one with a default value of (wordsRead = 0)
-    axios({
-      method: 'get',
-      url: '/api/create-book-progress?bookName=Moby%20Dick'
-    }).then(currentlyReading => {
-      var bookTitle = currentlyReading.data.title
-      var wordsRead = currentlyReading.data.wordsRead
-      const readingData = { words: wordsRead, title: bookTitle }
-      dispatch({ type: GET_DEFAULT_BOOK_PROGRESS, payload: readingData })
-    })
   }
 }
 
-export const uploadBook = _formData => async dispatch => {
+export const uploadBook = (_formData, _fileName) => async dispatch => {
   axios({
     method: 'post',
     headers: {
@@ -48,7 +50,20 @@ export const uploadBook = _formData => async dispatch => {
     .then(response => {
       const imageLocation = response.data.location
       const uploadSuccess = imageLocation ? true : false
-      dispatch({ type: UPLOAD_STATUS, payload: uploadSuccess })
+      if (uploadSuccess) {
+        // Splitting the file-name from its extension
+        const fileName = _fileName.split('.')[0]
+        axios({
+          method: 'post',
+          url: '/api/create-book-progress?bookName=' + fileName
+        }).then(currentlyReading => {
+          console.log(
+            'this is what we are currently reading!: ',
+            currentlyReading
+          )
+          dispatch({ type: UPLOAD_STATUS, payload: uploadSuccess })
+        })
+      }
     })
     .catch(err => {
       console.log('this is an error', err)

@@ -25,16 +25,10 @@ module.exports = (app: express.Application) => {
     bookDataController.create(req, res)
   })
 
-  app.get('/api/word-retrieval/:info', (req, res) => {
-    const convertedParams = parseWordRetrievalParameters(
-      req.params.info.split(',')
-    )
-    res.send(
-      bookDataController.retrieveWords(
-        convertedParams['FileName'],
-        convertedParams['StartWord'],
-        convertedParams['IncrementValue']
-      )
-    )
+  app.get('/api/word-retrieval', (req, res) => {
+    const bookName: string = req.query.bookName
+    const startWord: number = req.query.startWord
+    const incrementValue: number = req.query.incrementValue
+    bookDataController.retrieve(res, bookName, startWord, incrementValue)
   })
 }
