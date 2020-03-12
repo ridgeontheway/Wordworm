@@ -11,6 +11,7 @@ import mongoose from 'mongoose'
 import './app/services/passportService'
 // Connecting to DB
 mongoose.connect(sessionKeys.mongoURI, {
+  useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true
 })

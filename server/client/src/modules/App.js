@@ -14,7 +14,6 @@ class App extends Component {
   // the location that the initial ajax requests will be located in
   componentDidMount() {
     this.props.fetchUser()
-    this.props.getWordsFromBook()
   }
 
   render() {

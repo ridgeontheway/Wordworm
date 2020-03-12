@@ -1,6 +1,11 @@
 import axios from 'axios'
 import $ from 'jquery'
-import { FETCH_USER, GET_DEFAULT_BOOK_PROGRESS, UPLOAD_STATUS } from './types'
+import {
+  FETCH_USER,
+  GET_DEFAULT_BOOK_PROGRESS,
+  UPLOAD_STATUS,
+  BOOK_PROGRESS
+} from './types'
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user')
@@ -20,20 +25,25 @@ export const getWordsFromBook = () => async dispatch => {
   console.log(res)
 }
 
-export const fetchCurrentlyReading = () => async dispatch => {
-  const res = await axios.get('/api/current_user')
-  const currentlyReadingDocumentID = res.data.currentlyReading
-  if (currentlyReadingDocumentID[0]) {
-    const currentlyReading = await axios.get(
-      '/api/retrieve-book-progress?id=' + currentlyReadingDocumentID[0]
-    )
-    var bookTitle = currentlyReading.data.title
-    var wordsRead = currentlyReading.data.wordsRead
-    const readingData = { words: wordsRead, title: bookTitle }
-    dispatch({ type: GET_DEFAULT_BOOK_PROGRESS, payload: readingData })
-  } else {
-    // If there is no entry created -- we create one with a default value of (wordsRead = 0)
-  }
+export const fetchCurrentlyReading = _currentUserSignedIn => async dispatch => {
+  const currentlyReading = _currentUserSignedIn['currentlyReading']
+  const request = '/api/retrieve-book-progress'
+  // The requests for all the book info
+  var requests = []
+  // The data contained in the api response
+  var returnData = []
+
+  currentlyReading.forEach(documentID => {
+    const params = {
+      id: documentID
+    }
+    requests.push(axios.get(request, { params }))
+  })
+  const res = await axios.all(requests)
+  res.forEach(response => {
+    returnData.push(response.data)
+  })
+  dispatch({ type: BOOK_PROGRESS, payload: returnData })
 }
 
 export const uploadBook = (_formData, _fileName) => async dispatch => {

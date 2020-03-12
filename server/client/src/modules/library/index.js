@@ -1,30 +1,53 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions";
-import Screen from "./Screen";
-import "../styles.css";
-// 1. call the fetch user
-// 2. once I get an update from the API back, I need to check to see if I am currently reading anything
-// 3. If I am currently reading anything, I need to find that by ID
-// 4. If I am not, then I need to create the book progress
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import * as actions from '../../actions'
+import Screen from './Screen'
+import '../styles.css'
 class LibraryScreen extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
-      bookTitle: "Moby Dick",
-      wordsRead: 0
-    };
+      userSignedIn: null
+    }
   }
   componentDidMount() {
-    this.props.fetchCurrentlyReading();
+    this.props.fetchUser()
   }
+
+  fetchContent() {
+    // Fetching the current user so we can load their book preferences
+    this.props.fetchUser()
+    return <h1>Loading....</h1>
+  }
+
+  loadContent() {
+    // Rendering the user's books
+    this.props.fetchCurrentlyReading(this.state.userSignedIn)
+    return <Screen />
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.auth && state.userSignedIn != props.auth) {
+      return {
+        userSignedIn: props.auth
+      }
+    }
+    return null
+  }
+
   render() {
     return (
       <div className="main__container">
-        <Screen />
+        {this.state.userSignedIn ? this.loadContent() : this.fetchContent()}
       </div>
-    );
+    )
   }
 }
 
-export default connect(null, actions)(LibraryScreen);
+function mapStateToProps(state) {
+  return {
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps, actions)(LibraryScreen)

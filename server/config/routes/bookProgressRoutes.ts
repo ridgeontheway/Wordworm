@@ -49,6 +49,7 @@ module.exports = (app: express.Application) => {
         (error, newBookProgress) => {
           if (error) console.error(error)
           if (newBookProgress) {
+            console.log('this is the new bookProgress: ', newBookProgress)
             // Adding the book progress to the user
             const bookProgressSchemaID = newBookProgress._id
             userDataController.update(
