@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { IconContext } from 'react-icons'
-import { FaBookOpen } from 'react-icons/fa'
+import { FaBook } from 'react-icons/fa'
 import { connect } from 'react-redux'
 import { TOP_ICON } from '../../constants/iconSize'
 import BookCardComponent from '../../components/card/book'
@@ -61,7 +61,7 @@ class Screen extends Component {
                   size: TOP_ICON
                 }}>
                 <div>
-                  <FaBookOpen />
+                  <FaBook />
                 </div>
               </IconContext.Provider>
             </div>

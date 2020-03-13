@@ -2,7 +2,7 @@ import axios from 'axios'
 import $ from 'jquery'
 import {
   FETCH_USER,
-  GET_DEFAULT_BOOK_PROGRESS,
+  GET_BOOK_CONTENTS,
   UPLOAD_STATUS,
   BOOK_PROGRESS
 } from './types'
@@ -14,15 +14,15 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
-export const getWordsFromBook = () => async dispatch => {
+export const getWordsFromBook = _bookID => async dispatch => {
   const params = {
-    bookName: 'moby-dick',
+    bookName: _bookID,
     startWord: '0',
     incrementValue: '10'
   }
   console.log(params)
   const res = await axios.get('/api/word-retrieval', { params })
-  console.log(res)
+  dispatch({ type: GET_BOOK_CONTENTS, payload: res.data })
 }
 
 export const fetchCurrentlyReading = _currentUserSignedIn => async dispatch => {
