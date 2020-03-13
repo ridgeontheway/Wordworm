@@ -8,6 +8,7 @@ import DashboardScreen from './dashboard'
 import LoginScreen from './login'
 import UploadScreen from './upload'
 import LibraryScreen from './library'
+import ReadingScreen from './reading'
 
 // this file represents all the top most app - view setup
 class App extends Component {
@@ -24,6 +25,7 @@ class App extends Component {
           <Route exact path="/dashboard" component={DashboardScreen} />
           <Route exact path="/upload" component={UploadScreen} />
           <Route exact path="/library" component={LibraryScreen} />
+          <Route exact path="/read-book" component={ReadingScreen} />
         </Switch>
       </Router>
     )

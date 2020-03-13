@@ -8,9 +8,18 @@ import '../../styles.css'
 import '../styles.css'
 import './styles.css'
 export default class BookCardComponent extends Component {
+  constructor(props) {
+    super(props)
+    this.handleOnClick = this.handleOnClick.bind(this)
+  }
+
+  handleOnClick() {
+    this.props.onPress(this.props.bookTitle, this.props.bookID)
+  }
+
   render() {
     return (
-      <Card onClick={this.props.onPress}>
+      <Card onClick={this.handleOnClick}>
         <Card.Body className="card__body">
           <div className="card__wrap">
             <div>
@@ -43,6 +52,6 @@ export default class BookCardComponent extends Component {
 BookCardComponent.propTypes = {
   bookTitle: PropTypes.string.isRequired,
   wordsRead: PropTypes.number.isRequired,
-  bookId: PropTypes.string.isRequired,
-  onPress: PropTypes.func
+  bookID: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired
 }

@@ -11,13 +11,12 @@ class Screen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      readingInfo: []
+      readingInfo: null
     }
   }
 
   renderReadingInfo() {
     const data = this.state.readingInfo
-    console.log(data)
     return (
       <div className="book-progress__container">
         {data.map((data, idx) => {
@@ -31,6 +30,7 @@ class Screen extends Component {
                 bookTitle={bookTitle}
                 wordsRead={wordsRead}
                 bookID={bookID}
+                onPress={this.props.onBookSelect}
               />
             </div>
           )
@@ -79,6 +79,10 @@ function mapStateToProps(state) {
   return {
     readingInfo: state.readingInfo
   }
+}
+
+Screen.propTypes = {
+  onBookSelect: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps)(Screen)

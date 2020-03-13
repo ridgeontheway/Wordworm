@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import * as actions from '../../actions'
 import Screen from './Screen'
 import '../styles.css'
@@ -7,11 +8,20 @@ class LibraryScreen extends Component {
   constructor() {
     super()
     this.state = {
-      userSignedIn: null
+      userSignedIn: null,
+      redirect: false,
+      bookIDSelected: null,
+      bookTitleSelected: null
     }
+    this.onBookSelect = this.onBookSelect.bind(this)
   }
   componentDidMount() {
     this.props.fetchUser()
+    this.setState({
+      bookIDSelected: null,
+      bookTitleSelected: null,
+      redirect: false
+    })
   }
 
   fetchContent() {
@@ -23,7 +33,39 @@ class LibraryScreen extends Component {
   loadContent() {
     // Rendering the user's books
     this.props.fetchCurrentlyReading(this.state.userSignedIn)
-    return <Screen />
+    return <Screen onBookSelect={this.onBookSelect} />
+  }
+
+  onBookSelect(_bookTitle, _bookID) {
+    console.log('book selected', _bookTitle)
+    console.log('book-id:', _bookID)
+    this.setState({
+      bookTitleSelected: _bookTitle,
+      bookIDSelected: _bookID,
+      redirect: true
+    })
+  }
+
+  renderContent() {
+    if (this.state.redirect) {
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: '/read-book',
+            state: {
+              bookTitle: this.state.bookTitleSelected,
+              bookID: this.state.bookIDSelected
+            }
+          }}
+        />
+      )
+    }
+    if (this.state.userSignedIn) {
+      return this.loadContent()
+    } else {
+      return this.fetchContent()
+    }
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -36,11 +78,7 @@ class LibraryScreen extends Component {
   }
 
   render() {
-    return (
-      <div className="main__container">
-        {this.state.userSignedIn ? this.loadContent() : this.fetchContent()}
-      </div>
-    )
+    return <div className="main__container">{this.renderContent()}</div>
   }
 }
 
