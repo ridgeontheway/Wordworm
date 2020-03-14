@@ -46,6 +46,8 @@ class ReadingScreen extends Component {
     return null
   }
 
+  updateBookContents() {}
+
   render() {
     return (
       <div className="main__container">
