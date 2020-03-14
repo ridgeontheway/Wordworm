@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../actions'
 import Screen from './Screen'
+import { CORRECT, INCORRECT, UNREAD } from './Types'
 import '../styles.css'
 class ReadingScreen extends Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class ReadingScreen extends Component {
     this.state = {
       title: '',
       bookID: '',
-      bookContents: ''
+      bookContents: '',
+      bookContentsLookUp: null
     }
   }
   componentDidMount() {
@@ -25,8 +27,20 @@ class ReadingScreen extends Component {
   }
   static getDerivedStateFromProps(props, state) {
     if (props.content && props.content != state.content) {
+      // Storing the original data from the text in split form --> to be sent as 'content' in Screen.js
+      const splitData = props.content.trim().split(/\s+/)
+      // Removing special characters from the text
+      const bookWords = props.content.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, ' ')
+      // Removing all white-space for the individual words
+      const bookDataArr = bookWords.trim().split(/\s+/)
+      // Mapping each element into a json object for fast validation
+      const bookDataLookUp = bookDataArr.map(currentWord => {
+        return { word: currentWord.toLowerCase(), status: UNREAD }
+      })
+      console.log('this is the data we should be retuning: ', bookDataLookUp)
       return {
-        bookContents: props.content
+        bookContents: splitData,
+        bookContentsLookUp: bookDataLookUp
       }
     }
     return null
@@ -35,8 +49,11 @@ class ReadingScreen extends Component {
   render() {
     return (
       <div className="main__container">
-        {this.state.bookContents ? (
-          <Screen bookContent={this.state.bookContents} />
+        {this.state.bookContents && this.state.bookContentsLookUp ? (
+          <Screen
+            bookContent={this.state.bookContents}
+            bookContentLookUp={this.state.bookContentsLookUp}
+          />
         ) : (
           <h1>loading....</h1>
         )}

@@ -1,7 +1,8 @@
-.bookContents__theme {
-  display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+.readable-content__wrapper {
+  background-color: #ffff;
+  display: -webkit-flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 80vw;
 }

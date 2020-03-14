@@ -3,9 +3,31 @@ import PropTypes from 'prop-types'
 import { IconContext } from 'react-icons'
 import { FaBookOpen } from 'react-icons/fa'
 import { TOP_ICON } from '../../constants/iconSize'
+import { CORRECT, INCORRECT, UNREAD } from './Types'
+import ReadableContent from '../../components/readable'
 import './styles.css'
 import '../styles.css'
 export default class Screen extends Component {
+  constructor(props) {
+    super(props)
+  }
+  // this is where we are actually look up the content
+  renderContent() {
+    return (
+      <div className="readable-content__wrapper">
+        {this.props.bookContentLookUp.map((data, idx) => {
+          return (
+            <ReadableContent
+              key={idx}
+              lookUp={data}
+              content={this.props.bookContent[idx]}
+            />
+          )
+        })}
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className="screen__container">
@@ -26,7 +48,7 @@ export default class Screen extends Component {
         </div>
         <div className="content__container">
           <div className="content__wrapper">
-            <p className="bookContents__theme">{this.props.bookContent}</p>
+            <div>{this.props.bookContent ? this.renderContent() : null}</div>
           </div>
         </div>
       </div>
@@ -35,5 +57,6 @@ export default class Screen extends Component {
 }
 
 Screen.propTypes = {
-  bookContent: PropTypes.string.isRequired
+  bookContent: PropTypes.array.isRequired,
+  bookContentLookUp: PropTypes.array.isRequired
 }

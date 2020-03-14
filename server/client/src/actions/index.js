@@ -29,19 +29,16 @@ export const fetchCurrentlyReading = _currentUserSignedIn => async dispatch => {
   const currentlyReading = _currentUserSignedIn['currentlyReading']
   const request = '/api/retrieve-book-progress'
   // The requests for all the book info
-  var requests = []
-  // The data contained in the api response
-  var returnData = []
-
-  currentlyReading.forEach(documentID => {
+  const requests = currentlyReading.map(documentID => {
     const params = {
       id: documentID
     }
-    requests.push(axios.get(request, { params }))
+    return axios.get(request, { params })
   })
   const res = await axios.all(requests)
-  res.forEach(response => {
-    returnData.push(response.data)
+  // The data contained in the api response
+  const returnData = res.map(currentResponse => {
+    return currentResponse.data
   })
   dispatch({ type: BOOK_PROGRESS, payload: returnData })
 }
