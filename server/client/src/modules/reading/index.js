@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../actions'
 import Screen from './Screen'
+import Microphone from '../../components/microphone'
 import { CORRECT, INCORRECT, UNREAD } from './Types'
+import './styles.css'
 import '../styles.css'
 class ReadingScreen extends Component {
   constructor(props) {
@@ -52,10 +54,13 @@ class ReadingScreen extends Component {
     return (
       <div className="main__container">
         {this.state.bookContents && this.state.bookContentsLookUp ? (
-          <Screen
-            bookContent={this.state.bookContents}
-            bookContentLookUp={this.state.bookContentsLookUp}
-          />
+          <div className="reading-content-components__wrapper">
+            <Microphone label="hello" />
+            <Screen
+              bookContent={this.state.bookContents}
+              bookContentLookUp={this.state.bookContentsLookUp}
+            />
+          </div>
         ) : (
           <h1>loading....</h1>
         )}

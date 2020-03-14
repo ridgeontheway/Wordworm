@@ -6,3 +6,11 @@
   flex-wrap: wrap;
   max-width: 80vw;
 }
+
+.reading-content-components__wrapper {
+  background-color: inherit;
+  display: -webkit-flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-width: 100vw;
+}
