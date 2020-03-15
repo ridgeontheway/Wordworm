@@ -102,8 +102,6 @@ export default class Microphone extends Component {
     this.setState({ record: true }, () => {
       var AudioContext = window.AudioContext || window.webkitAudioContext
       this.context = new AudioContext()
-      this.socket = openSocket('http://localhost:5000')
-
       this.initRecording(
         data => {
           console.log(data)
