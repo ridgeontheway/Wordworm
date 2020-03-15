@@ -4,7 +4,8 @@ import {
   FETCH_USER,
   GET_BOOK_CONTENTS,
   UPLOAD_STATUS,
-  BOOK_PROGRESS
+  BOOK_PROGRESS,
+  PROCESS_SPEECH_DATA
 } from './types'
 
 export const fetchUser = () => async dispatch => {
@@ -41,6 +42,33 @@ export const fetchCurrentlyReading = _currentUserSignedIn => async dispatch => {
     return currentResponse.data
   })
   dispatch({ type: BOOK_PROGRESS, payload: returnData })
+}
+
+export const processSpeechData = _data => async dispatch => {
+  const resultsArr = _data['results']
+  // Extracting the alternatives form the responses
+  const speechAlternativesArr = resultsArr.map(speechResult => {
+    return speechResult['alternatives']
+  })
+  // Extracting the [words, confidence] values received by the API for each speechElement returned
+  const spokenWordsArr = speechAlternativesArr.map(speechElement => {
+    const result = speechElement.map(element => {
+      return { words: element['words'], confidence: element['confidence'] }
+    })
+    return result
+  })
+  // Iterating through all spokenWords, extracting the necessary info
+  const processedSpeechData = spokenWordsArr.map(spokenWordObj => {
+    const processedUtterance = spokenWordObj.map(speechUtterance => {
+      const confidence = speechUtterance['confidence']
+      const wordsArr = speechUtterance['words'].map(spokenWordsObj => {
+        return spokenWordsObj['word'].toLowerCase()
+      })
+      return { wordArr: wordsArr, confidence: confidence }
+    })
+    return processedUtterance
+  })
+  dispatch({ type: PROCESS_SPEECH_DATA, payload: processedSpeechData })
 }
 
 export const uploadBook = (_formData, _fileName) => async dispatch => {

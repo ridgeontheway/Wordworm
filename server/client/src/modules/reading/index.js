@@ -13,14 +13,17 @@ class ReadingScreen extends Component {
       title: '',
       bookID: '',
       bookContents: '',
-      bookContentsLookUp: null
+      bookContentsLookUp: null,
+      requestedContentUpdate: false
     }
+    this.onVoiceDataReceived = this.onVoiceDataReceived.bind(this)
   }
   componentDidMount() {
     this.setState(
       {
         title: this.props.location.state.bookTitle,
-        bookID: this.props.location.state.bookID
+        bookID: this.props.location.state.bookID,
+        requestedContentUpdate: true
       },
       () => {
         this.props.getWordsFromBook(this.state.bookID)
@@ -28,7 +31,11 @@ class ReadingScreen extends Component {
     )
   }
   static getDerivedStateFromProps(props, state) {
-    if (props.content && props.content != state.content) {
+    if (
+      props.content &&
+      props.content != state.content &&
+      state.requestedContentUpdate
+    ) {
       // Storing the original data from the text in split form --> to be sent as 'content' in Screen.js
       const splitData = props.content.trim().split(/\s+/)
       // Removing special characters from the text
@@ -42,20 +49,23 @@ class ReadingScreen extends Component {
       console.log('this is the data we should be retuning: ', bookDataLookUp)
       return {
         bookContents: splitData,
-        bookContentsLookUp: bookDataLookUp
+        bookContentsLookUp: bookDataLookUp,
+        requestedContentUpdate: false
       }
     }
     return null
   }
 
-  updateBookContents() {}
+  onVoiceDataReceived(_data) {
+    this.props.processSpeechData(_data)
+  }
 
   render() {
     return (
       <div className="main__container">
         {this.state.bookContents && this.state.bookContentsLookUp ? (
           <div className="reading-content-components__wrapper">
-            <Microphone label="hello" />
+            <Microphone onVoiceDataReceived={this.onVoiceDataReceived} />
             <Screen
               bookContent={this.state.bookContents}
               bookContentLookUp={this.state.bookContentsLookUp}

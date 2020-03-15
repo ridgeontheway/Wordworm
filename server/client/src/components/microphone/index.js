@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import openSocket from 'socket.io-client'
+import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button'
 import { IconContext } from 'react-icons'
 import { FaMicrophone, FaMicrophoneSlash } from 'react-icons/fa'
@@ -104,7 +104,7 @@ export default class Microphone extends Component {
       this.context = new AudioContext()
       this.initRecording(
         data => {
-          console.log(data)
+          this.props.onVoiceDataReceived(data)
         },
         error => {
           console.error('error when recording: ', error)
@@ -152,4 +152,8 @@ export default class Microphone extends Component {
   render() {
     return <div className="button__wrapper">{this.renderButton()}</div>
   }
+}
+
+Microphone.propTypes = {
+  onVoiceDataReceived: PropTypes.func.isRequired
 }
