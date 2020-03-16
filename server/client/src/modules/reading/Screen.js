@@ -7,14 +7,17 @@ import { TOP_ICON } from '../../constants/iconSize'
 import { connect } from 'react-redux'
 import ReadableContent from '../../components/readable'
 import { CORRECT, INCORRECT, UNREAD } from './Types'
+import {
+  SPOKEN_CONFIDENCE,
+  WORD_SIMILARITY
+} from '../../constants/SpeechRecginition'
 import './styles.css'
 import '../styles.css'
 class Screen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      bookContentLookUp: this.props.bookContentLookUp,
-      confidence: 0.7
+      bookContentLookUp: this.props.bookContentLookUp
     }
   }
 
@@ -31,7 +34,7 @@ class Screen extends Component {
             speechData.push({ word, confidence })
           })
           highestConfidence =
-            element['confidence'] >= state.confidence
+            element['confidence'] >= SPOKEN_CONFIDENCE
               ? element['confidence']
               : highestConfidence
         })
@@ -58,7 +61,7 @@ class Screen extends Component {
             if (
               (currentWord == stateWord &&
                 currentConfidence >= state.confidence) ||
-              similarity >= 0.66
+              similarity >= WORD_SIMILARITY
             ) {
               stateProgression = CORRECT
               speechData.splice(i, 1)
