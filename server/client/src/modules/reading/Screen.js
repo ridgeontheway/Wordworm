@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { IconContext } from 'react-icons'
 import { FaBookOpen } from 'react-icons/fa'
+import { compareTwoStrings } from 'string-similarity'
 import { TOP_ICON } from '../../constants/iconSize'
 import { connect } from 'react-redux'
 import ReadableContent from '../../components/readable'
@@ -20,13 +21,14 @@ class Screen extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.speechData) {
       var highestConfidence = 0
-      var speechDataMap = new Map()
+      var speechData = []
       props.speechData.forEach(speechElement => {
         speechElement.forEach(element => {
-          const spokenConfidence = element['confidence']
+          const confidence = element['confidence']
           const spokenWords = element['wordArr']
-          spokenWords.forEach(spokenWord => {
-            speechDataMap.set(spokenWord, spokenConfidence)
+          spokenWords.forEach(word => {
+            console.log(word)
+            speechData.push({ word, confidence })
           })
           highestConfidence =
             element['confidence'] >= state.confidence
@@ -44,12 +46,27 @@ class Screen extends Component {
         const stateWord = data['word']
         var stateProgression = data['status']
 
-        if (speechDataMap.has(stateWord)) {
-          const spokenWordConfidence = speechDataMap.get(stateWord)
-          if (spokenWordConfidence >= state.confidence) {
-            stateProgression = CORRECT
+        if (stateProgression != CORRECT) {
+          for (var i = 0; i < speechData.length; i++) {
+            const {
+              confidence: currentConfidence,
+              word: currentWord
+            } = speechData[i]
+
+            const similarity = compareTwoStrings(currentWord, stateWord)
+            // A match has been made
+            if (
+              (currentWord == stateWord &&
+                currentConfidence >= state.confidence) ||
+              similarity >= 0.66
+            ) {
+              stateProgression = CORRECT
+              speechData.splice(i, 1)
+              break
+            }
           }
         }
+
         return { word: stateWord, status: stateProgression }
       })
 
