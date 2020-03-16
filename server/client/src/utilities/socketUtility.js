@@ -1,8 +1,5 @@
-import openSocket from 'socket.io-client'
-const socket = openSocket('http://localhost:5000')
-
 const SocketUtility = {
-  emitStartStream () {
+  emitStartStream(socket) {
     socket.emit('startGoogleCloudStream', {
       config: {
         encoding: 'LINEAR16',
@@ -14,24 +11,24 @@ const SocketUtility = {
       interimResults: true
     })
   },
-  emitBinaryAudioData (data) {
+  emitBinaryAudioData(data, socket) {
     socket.emit('binaryAudioData', data)
   },
-  speechDataReceived (onDataCallback) {
-    socket.on('speechData', (data) => {
+  speechDataReceived(onDataCallback, socket) {
+    socket.on('speechData', data => {
       onDataCallback(data)
     })
   },
-  errorReceived (onErrorCallback, closeStreamCallback) {
-    socket.on('googleCloudStreamError', (error) => {
+  errorReceived(onErrorCallback, closeStreamCallback, socket) {
+    socket.on('googleCloudStreamError', error => {
       onErrorCallback(error)
       closeStreamCallback()
     })
   },
-  emitEndStream () {
+  emitEndStream(socket) {
     socket.emit('endGoogleCloudStream', '')
   },
-  endStreamListeners () {
+  endStreamListeners(socket) {
     socket.off('speechData')
     socket.off('googleCloudStreamError')
   }

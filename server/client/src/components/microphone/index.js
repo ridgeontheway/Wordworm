@@ -3,10 +3,14 @@ import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button'
 import { IconContext } from 'react-icons'
 import { FaMicrophone, FaMicrophoneSlash } from 'react-icons/fa'
+import io from 'socket.io-client'
 import { CARD_MENU_ICON } from '../../constants/iconSize'
 import ConverterUtility from '../../utilities/converterUtility'
 import SocketUtility from '../../utilities/socketUtility'
 import './styles.css'
+
+const socket = io()
+
 export default class Microphone extends Component {
   constructor() {
     super()
@@ -38,7 +42,7 @@ export default class Microphone extends Component {
   }
 
   initRecording(onData, onError) {
-    SocketUtility.emitStartStream()
+    SocketUtility.emitStartStream(socket)
     this.processor = this.context.createScriptProcessor(this.bufferSize, 1, 1)
     this.processor.connect(this.context.destination)
     this.context.resume()
@@ -51,24 +55,24 @@ export default class Microphone extends Component {
       this.processor.onaudioprocess = e => {
         var left = e.inputBuffer.getChannelData(0)
         var left16 = ConverterUtility.convertFloat32ToInt16(left)
-        SocketUtility.emitBinaryAudioData(left16)
+        SocketUtility.emitBinaryAudioData(left16, socket)
       }
     })
 
     if (onData) {
-      SocketUtility.speechDataReceived(onData)
+      SocketUtility.speechDataReceived(onData, socket)
     }
-    SocketUtility.errorReceived(onError, this.closeAll)
+    SocketUtility.errorReceived(onError, this.closeAll, socket)
   }
 
   stopRecording() {
     this.setState({ record: false })
-    SocketUtility.emitEndStream()
+    SocketUtility.emitEndStream(socket)
     this.closeAll()
   }
 
   closeAll() {
-    SocketUtility.endStreamListeners()
+    SocketUtility.endStreamListeners(socket)
 
     const tracks = this.globalStream ? this.globalStream.getTracks() : null
     const track = tracks ? tracks[0] : null
