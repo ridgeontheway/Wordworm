@@ -1,6 +1,12 @@
 import axios from 'axios'
 import $ from 'jquery'
-import { FETCH_USER, GET_DEFAULT_BOOK_PROGRESS, UPLOAD_STATUS } from './types'
+import {
+  FETCH_USER,
+  GET_BOOK_CONTENTS,
+  UPLOAD_STATUS,
+  BOOK_PROGRESS,
+  PROCESS_SPEECH_DATA
+} from './types'
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user')
@@ -9,31 +15,60 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
-export const getWordsFromBook = () => async dispatch => {
+export const getWordsFromBook = _bookID => async dispatch => {
   const params = {
-    bookName: 'moby-dick',
+    bookName: _bookID,
     startWord: '0',
     incrementValue: '10'
   }
   console.log(params)
   const res = await axios.get('/api/word-retrieval', { params })
-  console.log(res)
+  dispatch({ type: GET_BOOK_CONTENTS, payload: res.data })
 }
 
-export const fetchCurrentlyReading = () => async dispatch => {
-  const res = await axios.get('/api/current_user')
-  const currentlyReadingDocumentID = res.data.currentlyReading
-  if (currentlyReadingDocumentID[0]) {
-    const currentlyReading = await axios.get(
-      '/api/retrieve-book-progress?id=' + currentlyReadingDocumentID[0]
-    )
-    var bookTitle = currentlyReading.data.title
-    var wordsRead = currentlyReading.data.wordsRead
-    const readingData = { words: wordsRead, title: bookTitle }
-    dispatch({ type: GET_DEFAULT_BOOK_PROGRESS, payload: readingData })
-  } else {
-    // If there is no entry created -- we create one with a default value of (wordsRead = 0)
-  }
+export const fetchCurrentlyReading = _currentUserSignedIn => async dispatch => {
+  const currentlyReading = _currentUserSignedIn['currentlyReading']
+  const request = '/api/retrieve-book-progress'
+  // The requests for all the book info
+  const requests = currentlyReading.map(documentID => {
+    const params = {
+      id: documentID
+    }
+    return axios.get(request, { params })
+  })
+  const res = await axios.all(requests)
+  // The data contained in the api response
+  const returnData = res.map(currentResponse => {
+    return currentResponse.data
+  })
+  dispatch({ type: BOOK_PROGRESS, payload: returnData })
+}
+
+export const processSpeechData = _data => async dispatch => {
+  const resultsArr = _data['results']
+  // Extracting the alternatives form the responses
+  const speechAlternativesArr = resultsArr.map(speechResult => {
+    return speechResult['alternatives']
+  })
+  // Extracting the [words, confidence] values received by the API for each speechElement returned
+  const spokenWordsArr = speechAlternativesArr.map(speechElement => {
+    const result = speechElement.map(element => {
+      return { words: element['words'], confidence: element['confidence'] }
+    })
+    return result
+  })
+  // Iterating through all spokenWords, extracting the necessary info
+  const processedSpeechData = spokenWordsArr.map(spokenWordObj => {
+    const processedUtterance = spokenWordObj.map(speechUtterance => {
+      const confidence = speechUtterance['confidence']
+      const wordsArr = speechUtterance['words'].map(spokenWordsObj => {
+        return spokenWordsObj['word'].toLowerCase()
+      })
+      return { wordArr: wordsArr, confidence: confidence }
+    })
+    return processedUtterance
+  })
+  dispatch({ type: PROCESS_SPEECH_DATA, payload: processedSpeechData })
 }
 
 export const uploadBook = (_formData, _fileName) => async dispatch => {

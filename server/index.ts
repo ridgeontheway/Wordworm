@@ -10,7 +10,11 @@ import mongoose from 'mongoose'
 // Importing OAUTH service
 import './app/services/passportService'
 // Connecting to DB
-mongoose.connect(sessionKeys.mongoURI)
+mongoose.connect(sessionKeys.mongoURI, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
 
 const PORT = process.env.PORT || 5000
 var app: express.Application = express()
