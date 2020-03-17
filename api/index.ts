@@ -35,7 +35,7 @@ app.use(bodyParser.json())
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(cors())
-//tmp
+
 require('./config/routes/authRoutes')(app)
 require('./config/routes/bookProgressRoutes')(app)
 require('./config/routes/fileManagmentRoutes')(app)
@@ -44,7 +44,7 @@ require('./config/routes/socketRoutes')(io)
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))
   app.get('*', (req, res) => {
-    res.sendFile(resolve(__dirname, 'client', 'build', 'index.html'))
+    res.sendFile(resolve(__dirname, '../client', 'build', 'index.html'))
   })
 }
 

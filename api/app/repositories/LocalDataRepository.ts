@@ -1,6 +1,6 @@
 import LocalFileAccess from '../dataAccess/LocalFileAccess'
 
-class LocalDataRepository {
+export default class LocalDataRepository {
   private _downloadedCache: LocalFileAccess
 
   constructor(_localStoragePath: string, _parsedStoragePath: string) {
@@ -31,6 +31,3 @@ class LocalDataRepository {
     return this._downloadedCache.getParsedFilesForBook(bookName)
   }
 }
-
-Object.seal(LocalDataRepository)
-export = LocalDataRepository
