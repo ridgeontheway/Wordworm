@@ -12,7 +12,8 @@
     "moduleResolution": "node",
     "noImplicitAny": false,
     "pretty": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "allowJs": true
   },
   "include": ["api/**/*"],
   "exclude": ["node_modules", "**/*.test.ts", "client"]
