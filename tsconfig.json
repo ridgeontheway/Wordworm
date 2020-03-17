@@ -3,7 +3,7 @@
     /* Basic Options */
     "target": "es5",
     "module": "commonjs",
-    "outDir": "./build",
+    "outDir": "./build-api",
     "rootDir": "./api",
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
