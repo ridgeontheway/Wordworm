@@ -1,16 +1,16 @@
-import { default as BookProgressRepository } from "../repositories/BookProgressRepository";
-import { IBookProgressionService } from "./interfaces/IBookProgressionService";
-import { IBookProgression } from "../models/interfaces/IBookProgression";
+import { default as BookProgressRepository } from '../repositories/BookProgressRepository'
+import { IBookProgressionService } from './interfaces/IBookProgressionService'
+import { IBookProgression } from '../models/interfaces/IBookProgression'
 
-class BookProgressionService implements IBookProgressionService {
-  private _bookProgressionRepository: BookProgressRepository;
+export default class BookProgressionService implements IBookProgressionService {
+  private _bookProgressionRepository: BookProgressRepository
 
   constructor() {
-    this._bookProgressionRepository = new BookProgressRepository();
+    this._bookProgressionRepository = new BookProgressRepository()
   }
 
   create(item: IBookProgression, callback: (error: any, result: any) => void) {
-    this._bookProgressionRepository.create(item, callback);
+    this._bookProgressionRepository.create(item, callback)
   }
 
   retrieve(
@@ -18,7 +18,7 @@ class BookProgressionService implements IBookProgressionService {
     userIDReading: string,
     callback: (error: any, result: any) => void
   ) {
-    this._bookProgressionRepository.retrieve(title, userIDReading, callback);
+    this._bookProgressionRepository.retrieve(title, userIDReading, callback)
   }
 
   update(
@@ -27,11 +27,11 @@ class BookProgressionService implements IBookProgressionService {
     callback: (error: any, result: any) => void
   ) {
     this._bookProgressionRepository.findById(_id, (err, res) => {
-      if (err) callback(err, res);
+      if (err) callback(err, res)
       else {
-        this._bookProgressionRepository.update(res._id, item, callback);
+        this._bookProgressionRepository.update(res._id, item, callback)
       }
-    });
+    })
   }
 
   updateNumWordsRead(
@@ -45,20 +45,17 @@ class BookProgressionService implements IBookProgressionService {
       userIDReading,
       numWordsRead,
       callback
-    );
+    )
   }
 
   delete(_id: string, callback: (error: any, result: any) => void) {
-    this._bookProgressionRepository.delete(_id, callback);
+    this._bookProgressionRepository.delete(_id, callback)
   }
 
   findById(
     _id: string,
     callback: (error: any, result: IBookProgression) => void
   ) {
-    this._bookProgressionRepository.findById(_id, callback);
+    this._bookProgressionRepository.findById(_id, callback)
   }
 }
-
-Object.seal(BookProgressionService);
-export = BookProgressionService;

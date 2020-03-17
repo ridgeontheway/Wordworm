@@ -1,6 +1,6 @@
 import S3Access from '../dataAccess/S3Access'
 
-class DataObjectRepository {
+export default class DataObjectRepository {
   private _dataAccess: S3Access
   private _downloadedCache
 
@@ -16,6 +16,3 @@ class DataObjectRepository {
     return this._dataAccess.getObject(_fileName, _downloadPath)
   }
 }
-
-Object.seal(DataObjectRepository)
-export = DataObjectRepository

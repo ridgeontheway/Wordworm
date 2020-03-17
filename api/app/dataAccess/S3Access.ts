@@ -37,7 +37,7 @@ export default class S3Access {
         if (file.mimetype === 'application/epub+zip') {
           cb(null, true)
         } else {
-          cb(new Error('Invalid file type being uploaded!'), false)
+          cb(null, false)
         }
       }
     }).single('book')

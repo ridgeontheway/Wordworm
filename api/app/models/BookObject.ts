@@ -1,6 +1,6 @@
 import { IBookObject } from './interfaces/IBookObject'
 
-class BookObject {
+export default class BookObject {
   private _bookObject: IBookObject
 
   constructor(bookProgression: IBookObject) {
@@ -11,6 +11,3 @@ class BookObject {
     return this._bookObject.title
   }
 }
-
-Object.seal(BookObject)
-export = BookObject

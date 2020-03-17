@@ -44,14 +44,14 @@ require('./config/routes/socketRoutes')(io)
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))
   app.get('*', (req, res) => {
-    res.sendFile(resolve(__dirname, 'client', 'build', 'index.html'))
+    res.sendFile(resolve(__dirname, '../client', 'build', 'index.html'))
   })
 }
 
 app.get('/google511af4de7731d787.html', (req, res) =>
   res.sendFile('client/public/google511af4de7731d787.html', { root: './' })
 )
-
+//Test
 http.listen(PORT, function() {
   console.log(`listening on *:${PORT}`)
 })

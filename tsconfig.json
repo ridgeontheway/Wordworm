@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "./build-api",
+    "rootDir": "./api",
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "pretty": true,
+    "sourceMap": true,
+    "allowJs": true
+  },
+  "include": ["api/**/*"],
+  "exclude": ["node_modules", "**/*.test.ts", "client"]
+}
