@@ -38,11 +38,8 @@ class LoginScreen extends Component {
         ) : (
           <Screen
             loginMicrophoneTitle="State of the art speech processing"
-            loginMicrophoneDescription="..."
             loginCloudTitle="Sync your progress across devices"
-            loginCloudDescription="..."
             loginDBTitle="Privacy first: no speech data is stored"
-            loginDbDescription="..."
             handleSignIn={this.handleSignIn}
           />
         )}

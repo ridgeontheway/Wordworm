@@ -5,6 +5,9 @@ import cookieSession from 'cookie-session'
 import passport from 'passport'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import socketIO from 'socket.io'
+import { resolve } from 'path'
+import normalizePort from 'normalize-port'
 import mongoose from 'mongoose'
 
 // Importing OAUTH service
@@ -16,10 +19,10 @@ mongoose.connect(sessionKeys.mongoURI, {
   useUnifiedTopology: true
 })
 
-const PORT = process.env.PORT || 5000
+const PORT = normalizePort(process.env.PORT || 5000)
 var app: express.Application = express()
 var http = createServer(app)
-var io = require('socket.io').listen(http)
+var io = socketIO(http)
 
 app.use(
   cookieSession({
@@ -40,9 +43,8 @@ require('./config/routes/socketRoutes')(io)
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))
-  const path = require('path')
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    res.sendFile(resolve(__dirname, 'client', 'build', 'index.html'))
   })
 }
 

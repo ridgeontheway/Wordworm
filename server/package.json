@@ -5,7 +5,7 @@
   "description": "",
   "scripts": {
     "start": "ts-node index.ts",
-    "build-for-deployment": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm install && npm run build --prefix client",
+    "build-for-deployment": "NPM_CONFIG_PRODUCTION=false npm ci --prefix client && npm ci && npm run build --prefix client",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server-dev\" \"npm run client\"",
     "debug": "nodemon --inspect ./index.ts --ignore public",
@@ -54,6 +54,7 @@
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
     "node-html-parser": "^1.1.18",
+    "normalize-port": "^1.0.0",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^2.0.0",
     "path": "^0.12.7",
