@@ -37,11 +37,8 @@ export default class Screen extends Component {
             <div className="login__container">
               <Login
                 microphoneTitle={this.props.loginMicrophoneTitle}
-                microphoneDescription={this.props.loginMicrophoneDescription}
                 cloudTitle={this.props.loginCloudTitle}
-                cloudDescription={this.props.loginCloudDescription}
                 dbTitle={this.props.loginDBTitle}
-                dbDescription={this.props.loginDbDescription}
               />
             </div>
             <div className="sign-in__theme">
@@ -56,10 +53,6 @@ export default class Screen extends Component {
 
 Screen.propTypes = {
   loginMicrophoneTitle: PropTypes.string.isRequired,
-  loginMicrophoneDescription: PropTypes.string.isRequired,
   loginCloudTitle: PropTypes.string.isRequired,
-  loginCloudDescription: PropTypes.string.isRequired,
-  loginDBTitle: PropTypes.string.isRequired,
-  loginDbDescription: PropTypes.string.isRequired,
-  OAUTHFlow: PropTypes.string.isRequired
+  loginDBTitle: PropTypes.string.isRequired
 }
