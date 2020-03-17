@@ -35,7 +35,7 @@ app.use(bodyParser.json())
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(cors())
-
+//tmp
 require('./config/routes/authRoutes')(app)
 require('./config/routes/bookProgressRoutes')(app)
 require('./config/routes/fileManagmentRoutes')(app)
