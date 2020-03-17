@@ -1,2 +1,5 @@
 node_modules
 dev.js
+api/app/dataAccess/data
+api/app/dataAccess/parsedBooks
+build/

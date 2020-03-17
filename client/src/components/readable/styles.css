@@ -1,0 +1,28 @@
+.bookContents__theme {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding: 0.3vw;
+}
+
+.bookContents__theme-success {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding: 0.3vw;
+  background-color: green;
+}
+
+.bookContents__theme-fail {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding: 0.3vw;
+  background-color: red;
+}
