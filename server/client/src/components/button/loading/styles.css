@@ -1,0 +1,23 @@
+.loading-content__wrap {
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  flex-direction: row;
+  justify-content: start;
+  padding: 0.15em;
+  align-items: center;
+}
+
+.text-theme {
+  color: white;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-left: 0.5em;
+  padding-top: 0.1em !important;
+}
+
+.btn[disabled] {
+  background-color: #707dfd;
+  border-color: #707dfd;
+}

@@ -1,2 +1,4 @@
 node_modules
 dev.js
+server/app/dataAccess/data
+server/app/dataAccess/parsedBooks

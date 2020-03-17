@@ -1,14 +1,27 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "prettier": "prettier-config-standard",
   "description": "",
   "scripts": {
     "start": "ts-node index.ts",
-    "build-for-deployment": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm install && npm run build --prefix client",
+    "build-for-deployment": "NPM_CONFIG_PRODUCTION=false npm ci --prefix client && npm ci && npm run build --prefix client",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server-dev\" \"npm run client\"",
+    "debug": "nodemon --inspect ./index.ts --ignore public",
     "server-dev": "nodemon index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "lint-staged && npm run lint --prefix client"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.ts": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -21,20 +34,34 @@
   },
   "homepage": "https://github.com/ridgeontheway/Emaily#readme",
   "dependencies": {
-    "concurrently": "^5.0.2",
-    "cookie-session": "^1.3.3",
-    "express": "^4.17.1",
-    "mongoose": "^5.7.5",
-    "passport": "^0.4.0",
+    "@google-cloud/speech": "^3.5.4",
     "@types/cookie-session": "^2.0.37",
     "@types/express": "^4.17.2",
     "@types/mongoose": "^5.5.23",
     "@types/node": "^13.1.6",
     "@types/passport": "^1.0.1",
     "@types/passport-google-oauth20": "^2.0.2",
+    "@types/socket.io": "^2.1.4",
+    "aws-sdk": "^2.635.0",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.0.2",
+    "cookie-session": "^1.3.3",
+    "cors": "^2.8.5",
+    "epub": "^1.2.0",
+    "express": "^4.17.1",
+    "html-to-text": "^5.1.1",
+    "mongoose": "^5.7.5",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "node-html-parser": "^1.1.18",
+    "normalize-port": "^1.0.0",
+    "passport": "^0.4.0",
     "passport-google-oauth20": "^2.0.0",
+    "path": "^0.12.7",
+    "socket.io": "^2.3.0",
     "ts-node": "^8.6.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
@@ -45,7 +72,25 @@
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-typescript": "^7.6.0",
     "@babel/register": "^7.6.2",
+    "@types/cors": "^2.8.6",
+    "@types/glob": "^7.1.1",
+    "@types/multer": "^1.3.10",
+    "@types/multer-s3": "^2.7.7",
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
+    "@typescript-eslint/parser": "^2.19.2",
     "babel-core": "^7.0.0-bridge.0",
-    "nodemon": "^1.19.4"
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-prettier-standard": "^3.0.1",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "nodemon": "^2.0.2",
+    "pre-commit": "^1.2.2",
+    "prettier": "1.19.1",
+    "prettier-config-standard": "^1.0.1"
   }
 }

@@ -1,0 +1,30 @@
+.button__wrapper {
+  position: absolute;
+  padding-left: 13vw;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
+  background-color: #707dfd;
+  border-color: #707dfd;
+}
+
+.btn-circle.btn-xl {
+  width: 60px;
+  height: 60px;
+  padding: 1px 6px;
+  border-radius: 25px;
+}
+
+.btn-circle:hover {
+  transform: scale(1.05);
+  transition: all 175ms ease-in-out;
+  background-color: #29a521;
+  border-color: #29a521;
+}
