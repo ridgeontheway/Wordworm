@@ -1,7 +1,6 @@
 .main__container {
   min-height: 100vh;
   margin: 0;
-  background: #048ccc;
   background: linear-gradient(to bottom, #048ccc 0%, #04528d 100%);
   display: flex;
   justify-content: center;
