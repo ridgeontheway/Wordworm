@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { CORRECT, INCORRECT, UNREAD } from '../../modules/reading/Types'
+import { CORRECT, INCORRECT, UNREAD } from '../../containers/reading/Types'
 import './styles.css'
 export default class ReadableContent extends Component {
   renderContent() {
