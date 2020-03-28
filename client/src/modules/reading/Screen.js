@@ -7,6 +7,8 @@ import { TOP_ICON } from '../../constants/iconSize'
 import { connect } from 'react-redux'
 import ReadableContent from '../../components/readable'
 import { CORRECT, INCORRECT, UNREAD } from './Types'
+import DashboardButton from '../../components/button/dashboard'
+import LibraryButton from '../../components/button/library'
 import {
   SPOKEN_CONFIDENCE,
   WORD_SIMILARITY
@@ -116,8 +118,18 @@ class Screen extends Component {
           </div>
         </div>
         <div className="content__container">
-          <div className="content__wrapper">
+          <div className="content__wrapper content-padding">
             <div>{this.props.bookContent ? this.renderContent() : null}</div>
+          </div>
+          <div className="button__container">
+            <div className="reading-button__wrapper">
+              <div className="reading-button__padding">
+                <DashboardButton onPress={this.props.onDashboardSelected} />
+              </div>
+              <div className="reading-button__padding">
+                <LibraryButton onPress={this.props.onLibrarySelected} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -133,7 +145,9 @@ function mapStateToProps(state) {
 
 Screen.propTypes = {
   bookContent: PropTypes.array.isRequired,
-  bookContentLookUp: PropTypes.array.isRequired
+  bookContentLookUp: PropTypes.array.isRequired,
+  onDashboardSelected: PropTypes.func.isRequired,
+  onLibrarySelected: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps)(Screen)

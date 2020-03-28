@@ -37,8 +37,10 @@ export default class Microphone extends Component {
   }
 
   componentWillUnmount() {
-    // closing the audio context
-    this.stopRecording()
+    if (this.input) {
+      // closing the audio context
+      this.stopRecording()
+    }
   }
 
   initRecording(onData, onError) {

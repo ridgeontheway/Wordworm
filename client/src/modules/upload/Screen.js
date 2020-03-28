@@ -4,6 +4,7 @@ import { FaCloudUploadAlt } from 'react-icons/fa'
 import PropTypes from 'prop-types'
 import { TOP_ICON } from '../../constants/iconSize'
 import Upload from '../../components/upload'
+import DashboardButton from '../../components/button/dashboard'
 import './styles.css'
 import '../styles.css'
 export default class Screen extends Component {
@@ -26,10 +27,13 @@ export default class Screen extends Component {
           </div>
         </div>
         <div className="content__container">
-          <div className="content__wrapper">
+          <div className="content__wrapper content-padding">
             <div className="login__container">
               <Upload onSubmit={this.props.handleFormSubmit} />
             </div>
+          </div>
+          <div className="button__container">
+            <DashboardButton onPress={this.props.onDashboardSelected} />
           </div>
         </div>
       </div>
@@ -38,5 +42,6 @@ export default class Screen extends Component {
 }
 
 Screen.propTypes = {
-  handleFormSubmit: PropTypes.func.isRequired
+  handleFormSubmit: PropTypes.func.isRequired,
+  onDashboardSelected: PropTypes.func.isRequired
 }
