@@ -5,6 +5,7 @@ import { IconContext } from 'react-icons'
 import { FaMicrophone, FaMicrophoneSlash } from 'react-icons/fa'
 import io from 'socket.io-client'
 import { CARD_MENU_ICON } from '../../constants/iconSize'
+import { AUDIO_STREAM_SAMPLING_RATE } from '../../constants/SpeechRecginition'
 import ConverterUtility from '../../utilities/converterUtility'
 import SocketUtility from '../../utilities/socketUtility'
 import './styles.css'
@@ -18,12 +19,14 @@ export default class Microphone extends Component {
       record: false
     }
     // Properties used for voice streaming over SocketIO
-    this.bufferSize = 2048
+
+    // Buffer-size set to 0 as per recommendations by Mozilla
+    // https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer/getChannelData
+    this.bufferSize = 0
     this.constraints = {
       audio: true,
       video: false
     }
-    this.AudioContext = null
     this.context = null
     this.processor = null
     this.input = null
@@ -48,15 +51,18 @@ export default class Microphone extends Component {
     this.processor = this.context.createScriptProcessor(this.bufferSize, 1, 1)
     this.processor.connect(this.context.destination)
     this.context.resume()
+    ConverterUtility.setSampleRate(this.context.sampleRate)
 
     navigator.mediaDevices.getUserMedia(this.constraints).then(stream => {
       this.globalStream = stream
       this.input = this.context.createMediaStreamSource(stream)
       this.input.connect(this.processor)
-
       this.processor.onaudioprocess = e => {
         var left = e.inputBuffer.getChannelData(0)
-        var left16 = ConverterUtility.convertFloat32ToInt16(left)
+        var left16 = ConverterUtility.downSampleAudioBuffer(
+          left,
+          AUDIO_STREAM_SAMPLING_RATE
+        )
         SocketUtility.emitBinaryAudioData(left16, socket)
       }
     })
@@ -99,7 +105,6 @@ export default class Microphone extends Component {
         this.input = null
         this.processor = null
         this.context = null
-        this.AudioContext = null
       })
     }
   }
