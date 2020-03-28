@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import * as actions from '../../actions'
 import Screen from './Screen'
 import Microphone from '../../components/microphone'
 import { CORRECT, INCORRECT, UNREAD } from './Types'
+import { DASHBOARD_REDIRECT } from '../../constants/RedirectPaths'
+
 import './styles.css'
 import '../styles.css'
 class ReadingScreen extends Component {
@@ -14,9 +17,12 @@ class ReadingScreen extends Component {
       bookID: '',
       bookContents: '',
       bookContentsLookUp: null,
-      requestedContentUpdate: false
+      requestedContentUpdate: false,
+      redirect: false,
+      redirectPath: null
     }
     this.onVoiceDataReceived = this.onVoiceDataReceived.bind(this)
+    this.onDashboardSelected = this.onDashboardSelected.bind(this)
   }
   componentDidMount() {
     this.setState(
@@ -30,6 +36,14 @@ class ReadingScreen extends Component {
       }
     )
   }
+
+  onDashboardSelected() {
+    this.setState({
+      redirect: true,
+      redirectPath: DASHBOARD_REDIRECT
+    })
+  }
+
   static getDerivedStateFromProps(props, state) {
     if (
       props.content &&
@@ -60,22 +74,38 @@ class ReadingScreen extends Component {
     this.props.processSpeechData(_data)
   }
 
+  renderContent() {
+    if (this.state.redirect && this.state.redirectPath === DASHBOARD_REDIRECT) {
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: this.state.redirectPath
+          }}
+        />
+      )
+    } else {
+      return (
+        <div className="main__container">
+          {this.state.bookContents && this.state.bookContentsLookUp ? (
+            <div className="reading-content-components__wrapper">
+              <Microphone onVoiceDataReceived={this.onVoiceDataReceived} />
+              <Screen
+                bookContent={this.state.bookContents}
+                bookContentLookUp={this.state.bookContentsLookUp}
+                onDashboardSelected={this.onDashboardSelected}
+              />
+            </div>
+          ) : (
+            <h1>loading....</h1>
+          )}
+        </div>
+      )
+    }
+  }
+
   render() {
-    return (
-      <div className="main__container">
-        {this.state.bookContents && this.state.bookContentsLookUp ? (
-          <div className="reading-content-components__wrapper">
-            <Microphone onVoiceDataReceived={this.onVoiceDataReceived} />
-            <Screen
-              bookContent={this.state.bookContents}
-              bookContentLookUp={this.state.bookContentsLookUp}
-            />
-          </div>
-        ) : (
-          <h1>loading....</h1>
-        )}
-      </div>
-    )
+    return <div>{this.renderContent()}</div>
   }
 }
 

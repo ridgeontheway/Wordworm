@@ -14,3 +14,7 @@
   flex-wrap: wrap;
   min-width: 100vw;
 }
+
+.content-padding {
+  margin-bottom: 1vh;
+}
