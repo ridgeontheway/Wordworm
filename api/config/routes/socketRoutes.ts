@@ -5,7 +5,6 @@ module.exports = (io: SocketIO.Server) => {
     console.log('user has connected!')
     socket.on('startGoogleCloudStream', request => {
       socketController.startStream(socket, request)
-      console.log('hkhjhkjh')
     })
     // Receive audio data
     socket.on('binaryAudioData', data => {
