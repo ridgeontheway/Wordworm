@@ -10,7 +10,6 @@ module.exports = (app: express.Application) => {
       scope: ['profile', 'email']
     })
   )
-  console.log('hello')
 
   app.get(
     '/auth/google/callback',
