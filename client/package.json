@@ -31,12 +31,15 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "lint-staged"
+    "lint": "lint-staged",
+    "pre-commit": "lint-staged"
   },
+  "pre-commit": [
+    "pre-commit"
+  ],
   "lint-staged": {
     "*.js": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "eslintConfig": {
@@ -66,6 +69,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-standard": "^4.0.1",
+    "lint-staged": "^10.0.9",
     "pre-commit": "^1.2.2",
     "prettier": "1.19.1",
     "prettier-config-standard": "^1.0.1"

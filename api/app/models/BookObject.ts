@@ -11,3 +11,5 @@ export default class BookObject {
     return this._bookObject.title
   }
 }
+
+console.log('this is a test to see if the linter for pre-commit is working!')
