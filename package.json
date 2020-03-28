@@ -8,7 +8,8 @@
     "dev": "concurrently \"npm run server-dev\" \"npm run client\"",
     "debug": "nodemon --inspect ./api/index.ts --ignore public",
     "server-dev": "nodemon ./api/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pre-commit": "lint-staged"
   },
   "dependencies": {
     "@google-cloud/speech": "^3.5.4",
@@ -67,7 +68,6 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "husky": "^4.2.3",
     "nodemon": "^2.0.2",
     "pre-commit": "^1.2.2",
     "prettier": "1.19.1",
