@@ -5,7 +5,10 @@ import * as actions from '../../actions'
 import Screen from './Screen'
 import Microphone from '../../components/microphone'
 import { CORRECT, INCORRECT, UNREAD } from './Types'
-import { DASHBOARD_REDIRECT } from '../../constants/RedirectPaths'
+import {
+  DASHBOARD_REDIRECT,
+  LIBRARY_REDIRECT
+} from '../../constants/RedirectPaths'
 
 import './styles.css'
 import '../styles.css'
@@ -23,6 +26,7 @@ class ReadingScreen extends Component {
     }
     this.onVoiceDataReceived = this.onVoiceDataReceived.bind(this)
     this.onDashboardSelected = this.onDashboardSelected.bind(this)
+    this.onLibrarySelected = this.onLibrarySelected.bind(this)
   }
   componentDidMount() {
     this.setState(
@@ -41,6 +45,13 @@ class ReadingScreen extends Component {
     this.setState({
       redirect: true,
       redirectPath: DASHBOARD_REDIRECT
+    })
+  }
+
+  onLibrarySelected() {
+    this.setState({
+      redirect: true,
+      redirectPath: LIBRARY_REDIRECT
     })
   }
 
@@ -75,7 +86,7 @@ class ReadingScreen extends Component {
   }
 
   renderContent() {
-    if (this.state.redirect && this.state.redirectPath === DASHBOARD_REDIRECT) {
+    if (this.state.redirect) {
       return (
         <Redirect
           push
@@ -94,6 +105,7 @@ class ReadingScreen extends Component {
                 bookContent={this.state.bookContents}
                 bookContentLookUp={this.state.bookContentsLookUp}
                 onDashboardSelected={this.onDashboardSelected}
+                onLibrarySelected={this.onLibrarySelected}
               />
             </div>
           ) : (

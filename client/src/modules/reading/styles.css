@@ -18,3 +18,16 @@
 .content-padding {
   margin-bottom: 1vh;
 }
+
+.reading-button__wrapper {
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.reading-button__padding {
+  padding: 0.5em;
+}
