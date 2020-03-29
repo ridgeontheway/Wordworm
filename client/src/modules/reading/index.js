@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import { compareTwoStrings } from 'string-similarity'
 import * as actions from '../../actions'
 import Screen from './Screen'
 import Microphone from '../../components/microphone'
 import { CORRECT, INCORRECT, UNREAD } from './Types'
+import {
+  SPOKEN_CONFIDENCE,
+  WORD_SIMILARITY
+} from '../../constants/SpeechRecginition'
 import {
   DASHBOARD_REDIRECT,
   LIBRARY_REDIRECT
@@ -20,6 +25,7 @@ class ReadingScreen extends Component {
       bookID: '',
       bookContents: '',
       bookContentsLookUp: null,
+      wordsSpokenCorrectly: 0,
       requestedContentUpdate: false,
       redirect: false,
       redirectPath: null
@@ -77,6 +83,61 @@ class ReadingScreen extends Component {
         bookContentsLookUp: bookDataLookUp,
         requestedContentUpdate: false
       }
+    } else if (props.speechData) {
+      var highestConfidence = 0
+      var speechData = []
+      props.speechData.forEach(speechElement => {
+        speechElement.forEach(element => {
+          const confidence = element['confidence']
+          const spokenWords = element['wordArr']
+          spokenWords.forEach(word => {
+            console.log(word)
+            speechData.push({ word, confidence })
+          })
+          highestConfidence =
+            element['confidence'] >= SPOKEN_CONFIDENCE
+              ? element['confidence']
+              : highestConfidence
+        })
+      })
+      // Pre-check to determine if we need to look though the state to update, if not we return early
+      if (highestConfidence == 0) {
+        return null
+      }
+      var updatedWordsCorrect = state.spokenWordsCorrectly
+      const updatedState = state.bookContentsLookUp.map((data, idx) => {
+        // The current values in the state
+        const stateWord = data['word']
+        var stateProgression = data['status']
+
+        if (stateProgression != CORRECT) {
+          for (var i = 0; i < speechData.length; i++) {
+            const {
+              confidence: currentConfidence,
+              word: currentWord
+            } = speechData[i]
+
+            const similarity = compareTwoStrings(currentWord, stateWord)
+            // A match has been made
+            if (
+              (currentWord == stateWord &&
+                currentConfidence >= state.confidence) ||
+              similarity >= WORD_SIMILARITY
+            ) {
+              stateProgression = CORRECT
+              speechData.splice(i, 1)
+              updatedWordsCorrect++
+              break
+            }
+          }
+        }
+
+        return { word: stateWord, status: stateProgression }
+      })
+
+      return {
+        bookContentsLookUp: updatedState
+      }
     }
     return null
   }
@@ -123,7 +184,8 @@ class ReadingScreen extends Component {
 
 function mapStateToProps(state) {
   return {
-    content: state.bookContent
+    content: state.bookContent,
+    speechData: state.speechData
   }
 }
 
