@@ -5,6 +5,8 @@ import { compareTwoStrings } from 'string-similarity'
 import * as actions from '../../actions'
 import Screen from './Screen'
 import Microphone from '../../components/microphone'
+import CorrectReadingStatus from '../../components/reading-status/correct'
+import IncorrectReadingStatus from '../../components/reading-status/incorrect'
 import { CORRECT, INCORRECT, UNREAD } from './Types'
 import {
   SPOKEN_CONFIDENCE,
@@ -26,6 +28,7 @@ class ReadingScreen extends Component {
       bookContents: '',
       bookContentsLookUp: null,
       wordsSpokenCorrectly: 0,
+      wordsSpokenIncorrectly: 0,
       requestedContentUpdate: false,
       redirect: false,
       redirectPath: null
@@ -104,12 +107,13 @@ class ReadingScreen extends Component {
       if (highestConfidence == 0) {
         return null
       }
-      var updatedWordsCorrect = state.spokenWordsCorrectly
+      var updatedWordsCorrect = state.wordsSpokenCorrectly
+      var updatedWordsIncorrect = state.wordsSpokenIncorrectly
       const updatedState = state.bookContentsLookUp.map((data, idx) => {
         // The current values in the state
         const stateWord = data['word']
         var stateProgression = data['status']
-
+        // Checking if the state word is correct
         if (stateProgression != CORRECT) {
           for (var i = 0; i < speechData.length; i++) {
             const {
@@ -130,13 +134,37 @@ class ReadingScreen extends Component {
               break
             }
           }
+          // Checking if a given word is incorrect
+          // TODO: think of a way to make this more robust
+          if (
+            idx > 0 &&
+            idx < state.bookContentsLookUp.length - 1 &&
+            stateProgression != INCORRECT
+          ) {
+            const {
+              status: wordBeforeCurrentStateProgression
+            } = state.bookContentsLookUp[idx - 1]
+            const {
+              status: wordAfterCurrentStateProgression
+            } = state.bookContentsLookUp[idx + 1]
+            if (
+              wordBeforeCurrentStateProgression === CORRECT &&
+              wordAfterCurrentStateProgression === CORRECT
+            ) {
+              console.log('this is incorrect??', stateWord)
+              stateProgression = INCORRECT
+              updatedWordsIncorrect++
+            }
+          }
         }
 
         return { word: stateWord, status: stateProgression }
       })
 
       return {
-        bookContentsLookUp: updatedState
+        bookContentsLookUp: updatedState,
+        wordsSpokenCorrectly: updatedWordsCorrect,
+        wordsSpokenIncorrectly: updatedWordsIncorrect
       }
     }
     return null
@@ -168,6 +196,14 @@ class ReadingScreen extends Component {
                 onDashboardSelected={this.onDashboardSelected}
                 onLibrarySelected={this.onLibrarySelected}
               />
+              <div className="reading-status__container">
+                <CorrectReadingStatus
+                  correctWordsSpoken={this.state.wordsSpokenCorrectly}
+                />
+                <IncorrectReadingStatus
+                  incorrectWordsSpoken={this.state.wordsSpokenIncorrectly}
+                />
+              </div>
             </div>
           ) : (
             <h1>loading....</h1>
