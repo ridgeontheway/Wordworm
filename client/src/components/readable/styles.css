@@ -18,11 +18,42 @@
 }
 
 .bookContents__theme-fail {
-  display: block;
+  display: inline-block;
   margin-block-start: 1em;
   margin-block-end: 1em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
-  padding: 0.3vw;
+  margin: 0.3vw;
   background-color: rgba(255, 144, 0, 0.32);
+  border-bottom: 2px solid #04528d;
+  color: #04528d;
+  font-weight: bolder;
+  position: relative;
+}
+
+.bookContents__theme-fail::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  transform-origin: bottom right;
+  transition: transform 190ms ease-in;
+}
+
+.bookContents__theme-fail:hover:before {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.bookContents__theme-fail:hover {
+  transform: scale(1.09);
+  transition: all 190ms ease-in-out;
+  background-color: #29a521;
+  border-color: #29a521;
+  border-bottom: 2px solid transparent;
+  color: white;
 }

@@ -9,7 +9,7 @@ export default class ReadableContent extends Component {
     } else if (this.props.lookUp['status'] === INCORRECT) {
       return <p className="bookContents__theme-fail">{this.props.content}</p>
     } else {
-      return <p className="bookContents__theme">{this.props.content}</p>
+      return <p className="bookContents__theme-fail">{this.props.content}</p>
     }
   }
   render() {
