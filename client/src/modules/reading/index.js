@@ -7,6 +7,8 @@ import Screen from './Screen'
 import Microphone from '../../components/microphone'
 import CorrectReadingStatus from '../../components/reading-status/correct'
 import IncorrectReadingStatus from '../../components/reading-status/incorrect'
+import SelfRegulationFeedback from '../../components/self-regulaton-feedback'
+import SyllableUtility from '../../utilities/syllableUtility'
 import { CORRECT, INCORRECT, UNREAD } from './Types'
 import {
   SPOKEN_CONFIDENCE,
@@ -31,11 +33,16 @@ class ReadingScreen extends Component {
       wordsSpokenIncorrectly: 0,
       requestedContentUpdate: false,
       redirect: false,
-      redirectPath: null
+      redirectPath: null,
+      showModal: false,
+      modalWordArr: [[]],
+      modalWord: ''
     }
     this.onVoiceDataReceived = this.onVoiceDataReceived.bind(this)
     this.onDashboardSelected = this.onDashboardSelected.bind(this)
     this.onLibrarySelected = this.onLibrarySelected.bind(this)
+    this.onIncorrectWordClicked = this.onIncorrectWordClicked.bind(this)
+    this.toggleSelfRegulationModal = this.toggleSelfRegulationModal.bind(this)
   }
   componentDidMount() {
     this.setState(
@@ -174,6 +181,20 @@ class ReadingScreen extends Component {
     this.props.processSpeechData(_data)
   }
 
+  onIncorrectWordClicked(_word) {
+    const syllableArr = SyllableUtility.findSyllables(_word)
+    const splitWord = SyllableUtility.breakUpLongSyllables(syllableArr)
+    this.setState({
+      showModal: true,
+      modalWordArr: splitWord,
+      modalWord: _word
+    })
+  }
+
+  toggleSelfRegulationModal() {
+    this.setState({ showModal: !this.state.showModal })
+  }
+
   renderContent() {
     if (this.state.redirect) {
       return (
@@ -195,6 +216,7 @@ class ReadingScreen extends Component {
                 bookContentLookUp={this.state.bookContentsLookUp}
                 onDashboardSelected={this.onDashboardSelected}
                 onLibrarySelected={this.onLibrarySelected}
+                onIncorrectWordClicked={this.onIncorrectWordClicked}
               />
               <div className="reading-status__container">
                 <CorrectReadingStatus
@@ -204,6 +226,12 @@ class ReadingScreen extends Component {
                   incorrectWordsSpoken={this.state.wordsSpokenIncorrectly}
                 />
               </div>
+              <SelfRegulationFeedback
+                showModal={this.state.showModal}
+                handleModalClose={this.toggleSelfRegulationModal}
+                wordArr={this.state.modalWordArr}
+                word={this.state.modalWord}
+              />
             </div>
           ) : (
             <h1>loading....</h1>
