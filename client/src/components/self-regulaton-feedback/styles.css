@@ -19,3 +19,8 @@
   width: 100%;
   align-items: center;
 }
+
+.buttonContainer {
+  align-content: center;
+  justify-content: center;
+}

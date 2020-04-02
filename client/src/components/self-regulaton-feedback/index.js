@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
 import PropTypes from 'prop-types'
+import CloseButton from '../button/close'
 import ReadableContent from '../readable'
 import { SYLLABLE_FOCUSED, SYLLABLE_HIDDEN } from '../../modules/reading/Types'
 import './styles.css'
@@ -64,13 +64,10 @@ export default class SelfRegulationFeedback extends Component {
         <Modal.Body>
           <div>{this.showBrokenUpWord()}</div>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={this.props.handleModalClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={this.props.handleModalClose}>
-            Save Changes
-          </Button>
+        <Modal.Footer className="buttonContainer">
+          <div>
+            <CloseButton onPress={this.props.handleModalClose} />
+          </div>
         </Modal.Footer>
       </Modal>
     )
