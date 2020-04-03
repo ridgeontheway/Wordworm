@@ -34,7 +34,7 @@ export default class ReadableContent extends Component {
         </p>
       )
     } else {
-      return <p className="bookContents__theme-fail">{this.props.content}</p>
+      return <p className="bookContents__theme">{this.props.content}</p>
     }
   }
   render() {

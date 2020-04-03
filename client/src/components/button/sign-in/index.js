@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import Button from "react-bootstrap/Button";
-import PropTypes from "prop-types";
-import { IconContext } from "react-icons";
-import { FaSignInAlt } from "react-icons/fa";
-import { BUTTON_ICON } from "../../../constants/iconSize";
-import "../styles.css";
-import "../../styles.css";
+import React, { Component } from 'react'
+import Button from 'react-bootstrap/Button'
+import PropTypes from 'prop-types'
+import { IconContext } from 'react-icons'
+import { FaSignInAlt } from 'react-icons/fa'
+import { BUTTON_ICON } from '../../../constants/iconSize'
+import '../styles.css'
+import '../../styles.css'
 export default class SignInButton extends Component {
   render() {
     return (
@@ -15,10 +15,9 @@ export default class SignInButton extends Component {
             <div className="icon__wrap">
               <IconContext.Provider
                 value={{
-                  color: "white",
+                  color: 'white',
                   size: BUTTON_ICON
-                }}
-              >
+                }}>
                 <div>
                   <FaSignInAlt />
                 </div>
@@ -30,10 +29,10 @@ export default class SignInButton extends Component {
           </div>
         </Button>
       </a>
-    );
+    )
   }
 }
 
 SignInButton.propTypes = {
   onSignIn: PropTypes.string.isRequired
-};
+}
