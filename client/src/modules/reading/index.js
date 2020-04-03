@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { compareTwoStrings } from 'string-similarity'
 import * as actions from '../../actions'
 import Screen from './Screen'
 import Microphone from '../../components/microphone'
 import CorrectReadingStatus from '../../components/reading-status/correct'
 import IncorrectReadingStatus from '../../components/reading-status/incorrect'
-import { CORRECT, INCORRECT, UNREAD } from './Types'
-import {
-  SPOKEN_CONFIDENCE,
-  WORD_SIMILARITY
-} from '../../constants/SpeechRecginition'
+import SelfRegulationFeedback from '../../components/self-regulaton-feedback'
+import SyllableUtility from '../../utilities/syllableUtility'
+import { UNREAD } from './Types'
+import SpeechUtility from '../../utilities/speechUtility'
 import {
   DASHBOARD_REDIRECT,
   LIBRARY_REDIRECT
@@ -31,11 +29,16 @@ class ReadingScreen extends Component {
       wordsSpokenIncorrectly: 0,
       requestedContentUpdate: false,
       redirect: false,
-      redirectPath: null
+      redirectPath: null,
+      showModal: false,
+      modalWordArr: [],
+      modalWord: ''
     }
     this.onVoiceDataReceived = this.onVoiceDataReceived.bind(this)
     this.onDashboardSelected = this.onDashboardSelected.bind(this)
     this.onLibrarySelected = this.onLibrarySelected.bind(this)
+    this.onIncorrectWordClicked = this.onIncorrectWordClicked.bind(this)
+    this.toggleSelfRegulationModal = this.toggleSelfRegulationModal.bind(this)
   }
   componentDidMount() {
     this.setState(
@@ -86,92 +89,50 @@ class ReadingScreen extends Component {
         bookContentsLookUp: bookDataLookUp,
         requestedContentUpdate: false
       }
-    } else if (props.speechData) {
-      var highestConfidence = 0
-      var speechData = []
-      props.speechData.forEach(speechElement => {
-        speechElement.forEach(element => {
-          const confidence = element['confidence']
-          const spokenWords = element['wordArr']
-          spokenWords.forEach(word => {
-            console.log(word)
-            speechData.push({ word, confidence })
-          })
-          highestConfidence =
-            element['confidence'] >= SPOKEN_CONFIDENCE
-              ? element['confidence']
-              : highestConfidence
-        })
-      })
-      // Pre-check to determine if we need to look though the state to update, if not we return early
-      if (highestConfidence == 0) {
+    } else if (props.speechData && !state.showModal) {
+      const updatedState = SpeechUtility.processReducedSpeechData(
+        props.speechData,
+        state.bookContentsLookUp,
+        state.wordsSpokenCorrectly,
+        state.wordsSpokenIncorrectly
+      )
+
+      if (updatedState) {
+        // Clearing the redux state before over-riding local state
+        props.clearSpeechData()
+        return {
+          bookContentsLookUp: updatedState['bookContentsLookUp'],
+          wordsSpokenCorrectly: updatedState['wordsSpokenCorrectly'],
+          wordsSpokenIncorrectly: updatedState['wordsSpokenIncorrectly']
+        }
+      } else {
         return null
       }
-      var updatedWordsCorrect = state.wordsSpokenCorrectly
-      var updatedWordsIncorrect = state.wordsSpokenIncorrectly
-      const updatedState = state.bookContentsLookUp.map((data, idx) => {
-        // The current values in the state
-        const stateWord = data['word']
-        var stateProgression = data['status']
-        // Checking if the state word is correct
-        if (stateProgression != CORRECT) {
-          for (var i = 0; i < speechData.length; i++) {
-            const {
-              confidence: currentConfidence,
-              word: currentWord
-            } = speechData[i]
-
-            const similarity = compareTwoStrings(currentWord, stateWord)
-            // A match has been made
-            if (
-              (currentWord == stateWord &&
-                currentConfidence >= state.confidence) ||
-              similarity >= WORD_SIMILARITY
-            ) {
-              stateProgression = CORRECT
-              speechData.splice(i, 1)
-              updatedWordsCorrect++
-              break
-            }
-          }
-          // Checking if a given word is incorrect
-          // TODO: think of a way to make this more robust
-          if (
-            idx > 0 &&
-            idx < state.bookContentsLookUp.length - 1 &&
-            stateProgression != INCORRECT
-          ) {
-            const {
-              status: wordBeforeCurrentStateProgression
-            } = state.bookContentsLookUp[idx - 1]
-            const {
-              status: wordAfterCurrentStateProgression
-            } = state.bookContentsLookUp[idx + 1]
-            if (
-              wordBeforeCurrentStateProgression === CORRECT &&
-              wordAfterCurrentStateProgression === CORRECT
-            ) {
-              console.log('this is incorrect??', stateWord)
-              stateProgression = INCORRECT
-              updatedWordsIncorrect++
-            }
-          }
-        }
-
-        return { word: stateWord, status: stateProgression }
-      })
-
-      return {
-        bookContentsLookUp: updatedState,
-        wordsSpokenCorrectly: updatedWordsCorrect,
-        wordsSpokenIncorrectly: updatedWordsIncorrect
-      }
+    } else if (props.speechData && state.showModal) {
+      props.clearSpeechData()
     }
     return null
   }
 
   onVoiceDataReceived(_data) {
-    this.props.processSpeechData(_data)
+    // Only calling the API if the modal is hidden
+    if (!this.state.showModal) {
+      this.props.processSpeechData(_data)
+    }
+  }
+
+  onIncorrectWordClicked(_word) {
+    const syllableArr = SyllableUtility.findSyllables(_word)
+    const splitWord = SyllableUtility.breakUpLongSyllables(syllableArr)
+    this.setState({
+      showModal: true,
+      modalWordArr: splitWord,
+      modalWord: _word
+    })
+  }
+
+  toggleSelfRegulationModal() {
+    this.setState({ showModal: !this.state.showModal })
   }
 
   renderContent() {
@@ -195,6 +156,7 @@ class ReadingScreen extends Component {
                 bookContentLookUp={this.state.bookContentsLookUp}
                 onDashboardSelected={this.onDashboardSelected}
                 onLibrarySelected={this.onLibrarySelected}
+                onIncorrectWordClicked={this.onIncorrectWordClicked}
               />
               <div className="reading-status__container">
                 <CorrectReadingStatus
@@ -204,6 +166,13 @@ class ReadingScreen extends Component {
                   incorrectWordsSpoken={this.state.wordsSpokenIncorrectly}
                 />
               </div>
+              <SelfRegulationFeedback
+                showModal={this.state.showModal}
+                handleModalClose={this.toggleSelfRegulationModal}
+                wordArr={this.state.modalWordArr}
+                word={this.state.modalWord}
+                clearSpeechData={this.props.clearSpeechData}
+              />
             </div>
           ) : (
             <h1>loading....</h1>

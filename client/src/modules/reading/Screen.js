@@ -20,6 +20,7 @@ export default class Screen extends Component {
               key={idx}
               lookUp={data}
               content={this.props.bookContent[idx]}
+              onClick={this.props.onIncorrectWordClicked}
             />
           )
         })}
@@ -69,5 +70,6 @@ Screen.propTypes = {
   bookContent: PropTypes.array.isRequired,
   bookContentLookUp: PropTypes.array.isRequired,
   onDashboardSelected: PropTypes.func.isRequired,
-  onLibrarySelected: PropTypes.func.isRequired
+  onLibrarySelected: PropTypes.func.isRequired,
+  onIncorrectWordClicked: PropTypes.func.isRequired
 }
