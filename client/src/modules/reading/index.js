@@ -8,7 +8,7 @@ import CorrectReadingStatus from '../../components/reading-status/correct'
 import IncorrectReadingStatus from '../../components/reading-status/incorrect'
 import SelfRegulationFeedback from '../../components/self-regulaton-feedback'
 import SyllableUtility from '../../utilities/syllableUtility'
-import { CORRECT, INCORRECT, UNREAD } from './Types'
+import { UNREAD } from './Types'
 import SpeechUtility from '../../utilities/speechUtility'
 import {
   DASHBOARD_REDIRECT,
@@ -31,7 +31,7 @@ class ReadingScreen extends Component {
       redirect: false,
       redirectPath: null,
       showModal: false,
-      modalWordArr: [[]],
+      modalWordArr: [],
       modalWord: ''
     }
     this.onVoiceDataReceived = this.onVoiceDataReceived.bind(this)
@@ -89,7 +89,7 @@ class ReadingScreen extends Component {
         bookContentsLookUp: bookDataLookUp,
         requestedContentUpdate: false
       }
-    } else if (props.speechData) {
+    } else if (props.speechData && !state.showModal) {
       const updatedState = SpeechUtility.processReducedSpeechData(
         props.speechData,
         state.bookContentsLookUp,
@@ -108,12 +108,17 @@ class ReadingScreen extends Component {
       } else {
         return null
       }
+    } else if (props.speechData && state.showModal) {
+      props.clearSpeechData()
     }
     return null
   }
 
   onVoiceDataReceived(_data) {
-    this.props.processSpeechData(_data)
+    // Only calling the API if the modal is hidden
+    if (!this.state.showModal) {
+      this.props.processSpeechData(_data)
+    }
   }
 
   onIncorrectWordClicked(_word) {
@@ -166,6 +171,7 @@ class ReadingScreen extends Component {
                 handleModalClose={this.toggleSelfRegulationModal}
                 wordArr={this.state.modalWordArr}
                 word={this.state.modalWord}
+                clearSpeechData={this.props.clearSpeechData}
               />
             </div>
           ) : (

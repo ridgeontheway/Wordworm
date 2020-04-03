@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Button from 'react-bootstrap/Button'
 import PropTypes from 'prop-types'
 import { IconContext } from 'react-icons'
-import { FiXCircle } from 'react-icons/fi'
+import { FaDoorOpen } from 'react-icons/fa'
 import { BUTTON_ICON } from '../../../constants/iconSize'
 import '../styles.css'
 import '../../styles.css'
@@ -23,12 +23,12 @@ export default class CloseButton extends Component {
                 size: BUTTON_ICON
               }}>
               <div>
-                <FiXCircle />
+                <FaDoorOpen />
               </div>
             </IconContext.Provider>
           </div>
           <div>
-            <p className="text__body">Close</p>
+            <p className="text__body">Try Again</p>
           </div>
         </div>
       </Button>

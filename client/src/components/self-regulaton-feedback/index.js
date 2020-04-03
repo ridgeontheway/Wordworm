@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal'
 import PropTypes from 'prop-types'
 import CloseButton from '../button/close'
 import ReadableContent from '../readable'
-import { SYLLABLE_FOCUSED, SYLLABLE_HIDDEN } from '../../modules/reading/Types'
+import { SYLLABLE_FOCUSED } from '../../modules/reading/Types'
 import './styles.css'
 import '../styles.css'
 export default class SelfRegulationFeedback extends Component {
@@ -18,13 +18,14 @@ export default class SelfRegulationFeedback extends Component {
     if (props.wordArr) {
       const syllableLookUp = props.wordArr.map((letterArr, idx) => {
         const twoLetterCombinationStr = letterArr.join('')
-        const readingStatus = idx === 0 ? SYLLABLE_FOCUSED : SYLLABLE_HIDDEN
+        const readingStatus = SYLLABLE_FOCUSED
         return { word: twoLetterCombinationStr, status: readingStatus }
       })
       return {
         brokenWordLookUp: syllableLookUp
       }
     }
+    return null
   }
 
   showBrokenUpWord() {

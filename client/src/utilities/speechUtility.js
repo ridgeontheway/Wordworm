@@ -1,5 +1,10 @@
 import { compareTwoStrings } from 'string-similarity'
-import { CORRECT, INCORRECT, UNREAD } from '../modules/reading/Types'
+import {
+  CORRECT,
+  INCORRECT,
+  UNREAD,
+  SYLLABLE_FOCUSED
+} from '../modules/reading/Types'
 import {
   SPOKEN_CONFIDENCE,
   WORD_SIMILARITY
@@ -62,8 +67,8 @@ const SpeechUtility = {
       // The current values in the state
       const stateWord = data['word']
       var stateProgression = data['status']
-      // Checking if the state word is correct
-      if (stateProgression != CORRECT) {
+      // Checking if the state word is correct, if we are focusing on specific syllables, we want to correct the focused ones
+      if (stateProgression !== CORRECT) {
         for (var i = 0; i < speechData.length; i++) {
           const {
             confidence: currentConfidence,
@@ -204,6 +209,7 @@ const SpeechUtility = {
       status: isBetweenTwoCorrectWords,
       range: incorrectWordsRange
     }
-  }
+  },
+  compareFocusedSyllableWithSpeechData(focusedSyllable, speechData) {}
 }
 export default SpeechUtility

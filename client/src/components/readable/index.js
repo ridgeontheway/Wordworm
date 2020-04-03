@@ -3,9 +3,7 @@ import PropTypes from 'prop-types'
 import {
   CORRECT,
   INCORRECT,
-  UNREAD,
-  SYLLABLE_FOCUSED,
-  SYLLABLE_HIDDEN
+  SYLLABLE_FOCUSED
 } from '../../modules/reading/Types'
 import './styles.css'
 export default class ReadableContent extends Component {
@@ -24,12 +22,6 @@ export default class ReadableContent extends Component {
     } else if (this.props.lookUp['status'] === SYLLABLE_FOCUSED) {
       return (
         <p className="bookContents__theme-syllable-focused">
-          {this.props.content}
-        </p>
-      )
-    } else if (this.props.lookUp['status'] === SYLLABLE_HIDDEN) {
-      return (
-        <p className="bookContents__theme-syllable-unfocused">
           {this.props.content}
         </p>
       )

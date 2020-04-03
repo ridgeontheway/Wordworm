@@ -13,7 +13,7 @@
   margin-block-end: 1em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
-  padding: 0.3vw;
+  margin: 0.3vw;
   background-color: rgba(41, 165, 33, 0.24);
 }
 
@@ -42,21 +42,6 @@
   position: relative;
   font-size: x-large;
   border-bottom: 2px solid #5f6a7d;
-}
-
-.bookContents__theme-syllable-unfocused {
-  display: inline-block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  margin: 0.3vw;
-  position: relative;
-  -webkit-filter: blur(1px);
-  -moz-filter: blur(1px);
-  -ms-filter: blur(1px);
-  -o-filter: blur(1px);
-  filter: blur(1px);
 }
 
 .bookContents__theme-fail::before {
