@@ -1,7 +1,6 @@
 var sampleRate = 0
 const ConverterUtility = {
   setSampleRate(_sampleRate) {
-    console.log('sampleRate = ', sampleRate)
     sampleRate = _sampleRate
   },
   isValidOutSampleRate(buffer, outSampleRate) {

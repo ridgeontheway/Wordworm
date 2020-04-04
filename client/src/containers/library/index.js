@@ -48,8 +48,6 @@ class LibraryScreen extends Component {
   }
 
   onBookSelect(_bookTitle, _bookID) {
-    console.log('book selected', _bookTitle)
-    console.log('book-id:', _bookID)
     this.setState({
       bookTitleSelected: _bookTitle,
       bookIDSelected: _bookID,
@@ -59,7 +57,6 @@ class LibraryScreen extends Component {
   }
 
   onDashboardSelected() {
-    console.log('dashboard selected!')
     this.setState({
       redirect: true,
       redirectPath: DASHBOARD_REDIRECT

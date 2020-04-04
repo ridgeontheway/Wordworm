@@ -4,7 +4,6 @@ import { BOOK_PROGRESS } from '../actions/types'
 export default function bookProgressReducer(state = null, action) {
   switch (action.type) {
     case BOOK_PROGRESS:
-      console.log('this is what we are getting:', action.payload)
       var reducedData = []
       // Removing the ID and UserIDReading elements from the returned data
       action.payload.forEach(element => {

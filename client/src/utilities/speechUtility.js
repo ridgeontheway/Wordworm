@@ -23,7 +23,7 @@ const SpeechUtility = {
         const confidence = element['confidence']
         const spokenWords = element['wordArr']
         spokenWords.forEach(word => {
-          console.log(word)
+          // console.log(word)
           speechData.push({ word, confidence })
         })
         highestConfidence =
@@ -44,7 +44,7 @@ const SpeechUtility = {
       speechData
     )
     updatedState = stateUpdatedWithCorrectUtterances['state']
-    console.log('this is the updated state = ', updatedState)
+    // console.log('this is the updated state = ', updatedState)
     const wordsCorrect = stateUpdatedWithCorrectUtterances['correctUtterances']
     // Checking for incorrect words spoken
     const stateUpdatedWithIncorrectUtterances = this.checkForIncorrectUtterances(
@@ -70,7 +70,7 @@ const SpeechUtility = {
         const confidence = element['confidence']
         const spokenWords = element['wordArr']
         spokenWords.forEach(word => {
-          console.log(word)
+          // console.log(word)
           speechData.push({ word, confidence })
         })
         highestConfidence =

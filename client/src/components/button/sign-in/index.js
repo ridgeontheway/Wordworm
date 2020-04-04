@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Button from 'react-bootstrap/Button'
-import PropTypes from 'prop-types'
 import { IconContext } from 'react-icons'
 import { FaSignInAlt } from 'react-icons/fa'
 import { BUTTON_ICON } from '../../../constants/iconSize'
@@ -31,8 +30,4 @@ export default class SignInButton extends Component {
       </a>
     )
   }
-}
-
-SignInButton.propTypes = {
-  onSignIn: PropTypes.string.isRequired
 }
