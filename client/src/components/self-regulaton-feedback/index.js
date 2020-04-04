@@ -50,7 +50,7 @@ export default class SelfRegulationFeedback extends Component {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <div className="titleContainer">
             <div>
               <h2 className="title__theme">

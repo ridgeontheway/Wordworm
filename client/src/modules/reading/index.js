@@ -7,8 +7,9 @@ import Microphone from '../../components/microphone'
 import CorrectReadingStatus from '../../components/reading-status/correct'
 import IncorrectReadingStatus from '../../components/reading-status/incorrect'
 import SelfRegulationFeedback from '../../components/self-regulaton-feedback'
+import BallonGame from '../../components/ballon-game'
 import SyllableUtility from '../../utilities/syllableUtility'
-import { UNREAD } from './Types'
+import { UNREAD, INCORRECT } from './Types'
 import SpeechUtility from '../../utilities/speechUtility'
 import {
   DASHBOARD_REDIRECT,
@@ -30,8 +31,10 @@ class ReadingScreen extends Component {
       requestedContentUpdate: false,
       redirect: false,
       redirectPath: null,
-      showModal: false,
+      showRegulationModal: false,
+      showMiniGameModal: false,
       modalWordArr: [],
+      modalMiniGameArr: [],
       modalWord: ''
     }
     this.onVoiceDataReceived = this.onVoiceDataReceived.bind(this)
@@ -39,6 +42,8 @@ class ReadingScreen extends Component {
     this.onLibrarySelected = this.onLibrarySelected.bind(this)
     this.onIncorrectWordClicked = this.onIncorrectWordClicked.bind(this)
     this.toggleSelfRegulationModal = this.toggleSelfRegulationModal.bind(this)
+    this.onMiniGameClicked = this.onMiniGameClicked.bind(this)
+    this.toggleMiniGameModal = this.toggleMiniGameModal.bind(this)
   }
   componentDidMount() {
     this.setState(
@@ -89,7 +94,11 @@ class ReadingScreen extends Component {
         bookContentsLookUp: bookDataLookUp,
         requestedContentUpdate: false
       }
-    } else if (props.speechData && !state.showModal) {
+    } else if (
+      props.speechData &&
+      !state.showRegulationModal &&
+      !state.showMiniGameModal
+    ) {
       const updatedState = SpeechUtility.processReducedSpeechData(
         props.speechData,
         state.bookContentsLookUp,
@@ -108,7 +117,7 @@ class ReadingScreen extends Component {
       } else {
         return null
       }
-    } else if (props.speechData && state.showModal) {
+    } else if (props.speechData && state.showRegulationModal) {
       props.clearSpeechData()
     }
     return null
@@ -116,7 +125,7 @@ class ReadingScreen extends Component {
 
   onVoiceDataReceived(_data) {
     // Only calling the API if the modal is hidden
-    if (!this.state.showModal) {
+    if (!this.state.showRegulationModal) {
       this.props.processSpeechData(_data)
     }
   }
@@ -125,14 +134,34 @@ class ReadingScreen extends Component {
     const syllableArr = SyllableUtility.findSyllables(_word)
     const splitWord = SyllableUtility.breakUpLongSyllables(syllableArr)
     this.setState({
-      showModal: true,
+      showRegulationModal: true,
       modalWordArr: splitWord,
       modalWord: _word
     })
   }
 
+  onMiniGameClicked() {
+    // Extracting the incorrect words from the overall state
+    const incorrectWordsArr = this.state.bookContentsLookUp.filter(data => {
+      const { status: currentWordStatus } = data
+      return currentWordStatus === INCORRECT
+    })
+    this.setState({
+      showMiniGameModal: true,
+      modalMiniGameArr: incorrectWordsArr
+    })
+  }
+
+  toggleMiniGameModal() {
+    this.setState({
+      showMiniGameModal: !this.state.showMiniGameModal
+    })
+  }
+
   toggleSelfRegulationModal() {
-    this.setState({ showModal: !this.state.showModal })
+    this.setState({
+      showRegulationModal: !this.state.showRegulationModal
+    })
   }
 
   renderContent() {
@@ -157,6 +186,8 @@ class ReadingScreen extends Component {
                 onDashboardSelected={this.onDashboardSelected}
                 onLibrarySelected={this.onLibrarySelected}
                 onIncorrectWordClicked={this.onIncorrectWordClicked}
+                onMiniGameSelected={this.onMiniGameClicked}
+                numIncorrectWords={this.state.wordsSpokenIncorrectly}
               />
               <div className="reading-status__container">
                 <CorrectReadingStatus
@@ -167,10 +198,16 @@ class ReadingScreen extends Component {
                 />
               </div>
               <SelfRegulationFeedback
-                showModal={this.state.showModal}
+                showModal={this.state.showRegulationModal}
                 handleModalClose={this.toggleSelfRegulationModal}
                 wordArr={this.state.modalWordArr}
                 word={this.state.modalWord}
+                clearSpeechData={this.props.clearSpeechData}
+              />
+              <BallonGame
+                showModal={this.state.showMiniGameModal}
+                handleModalClose={this.toggleMiniGameModal}
+                wordArr={this.state.modalMiniGameArr}
                 clearSpeechData={this.props.clearSpeechData}
               />
             </div>

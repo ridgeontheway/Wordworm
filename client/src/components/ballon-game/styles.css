@@ -1,0 +1,127 @@
+.titleContainer {
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+  align-items: center;
+}
+
+.wordContainer {
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  align-items: center;
+}
+
+.buttonContainer {
+  align-content: center;
+  justify-content: center;
+}
+
+.balloon {
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  justify-content: space-around;
+  align-items: center;
+  width: 120px;
+  height: 145px;
+  background: #04528d;
+  border-radius: 80%;
+  position: relative;
+  box-shadow: inset -10px -10px 0 rgba(0, 0, 0, 0.07);
+  margin: 20px 30px;
+  transition: transform 0.5s ease;
+  z-index: 10;
+  animation: balloons 4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.balloon-success {
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  justify-content: space-around;
+  align-items: center;
+  width: 120px;
+  height: 145px;
+  background: #29a521;
+  border-radius: 80%;
+  position: relative;
+  box-shadow: inset -10px -10px 0 rgba(0, 0, 0, 0.07);
+  margin: 20px 30px;
+  transition: transform 0.5s ease;
+  z-index: 10;
+  animation: balloons 4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.balloon-success:before {
+  content: '▲';
+  font-size: 20px;
+  color: #29a521;
+  display: block;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  bottom: -12px;
+  z-index: -100;
+}
+
+.balloon-success:after {
+  content: '|';
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.2);
+  display: block;
+  height: 30px;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  bottom: -20px;
+  z-index: -200;
+}
+
+
+@keyframes balloons {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-25px) rotate(4deg);
+  }
+}
+
+.balloon:before {
+  content: '▲';
+  font-size: 20px;
+  color: #04528d;
+  display: block;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  bottom: -12px;
+  z-index: -100;
+}
+
+.balloon:after {
+  content: '|';
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.2);
+  display: block;
+  height: 30px;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  bottom: -20px;
+  z-index: -200;
+}

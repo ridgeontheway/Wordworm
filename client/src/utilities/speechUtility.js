@@ -3,7 +3,7 @@ import {
   CORRECT,
   INCORRECT,
   UNREAD,
-  SYLLABLE_FOCUSED
+  MINI_GAME_SUCCESS
 } from '../modules/reading/Types'
 import {
   SPOKEN_CONFIDENCE,
@@ -62,7 +62,46 @@ const SpeechUtility = {
       wordsSpokenIncorrectly: wordsIncorrect
     }
   },
-  checkForCorrectUtterances(currentState, wordsCorrect, speechData) {
+  processReducedMiniGameSpeechData(_reducedData, currentState) {
+    var highestConfidence = 0
+    var speechData = []
+    _reducedData.forEach(speechElement => {
+      speechElement.forEach(element => {
+        const confidence = element['confidence']
+        const spokenWords = element['wordArr']
+        spokenWords.forEach(word => {
+          console.log(word)
+          speechData.push({ word, confidence })
+        })
+        highestConfidence =
+          element['confidence'] >= SPOKEN_CONFIDENCE
+            ? element['confidence']
+            : highestConfidence
+      })
+    })
+    // Pre-check to determine if we need to look though the state to update, if not we return early
+    if (highestConfidence == 0) {
+      return null
+    }
+    var updatedState = null
+    // Checking for correct words spoken
+    const stateUpdatedWithCorrectUtterances = this.checkForCorrectUtterances(
+      currentState,
+      0,
+      speechData,
+      true
+    )
+    updatedState = stateUpdatedWithCorrectUtterances['state']
+    return {
+      correctWordLookUp: updatedState
+    }
+  },
+  checkForCorrectUtterances(
+    currentState,
+    wordsCorrect,
+    speechData,
+    isMiniGame = false
+  ) {
     const updatedState = currentState.map((data, idx) => {
       // The current values in the state
       const stateWord = data['word']
@@ -82,7 +121,7 @@ const SpeechUtility = {
               currentConfidence >= SPOKEN_CONFIDENCE) ||
             similarity >= WORD_SIMILARITY
           ) {
-            stateProgression = CORRECT
+            stateProgression = isMiniGame ? MINI_GAME_SUCCESS : CORRECT
             speechData.splice(i, 1)
             wordsCorrect++
             break
