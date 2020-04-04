@@ -100,13 +100,9 @@ export default class Microphone extends Component {
       this.processor.disconnect(this.context.destination)
     }
 
-    // if (this.context) {
-    //   this.context.close().then(() => {
-    //     this.input = null
-    //     this.processor = null
-    //     this.context = null
-    //   })
-    // }
+    this.input = null
+    this.processor = null
+    this.context = null
   }
 
   streamAudio() {
