@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { FaHome } from "react-icons/fa";
-import { IconContext } from "react-icons";
-import LibraryCardComponent from "../../components/card/library";
-import UploadCardComponent from "../../components/card/upload";
-import LogoutButton from "../../components/button/logout";
-import { TOP_ICON } from "../../constants/iconSize";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { FaHome } from 'react-icons/fa'
+import { IconContext } from 'react-icons'
+import LibraryCardComponent from '../../components/card/library'
+import UploadCardComponent from '../../components/card/upload'
+import LogoutButton from '../../components/button/logout'
+import { TOP_ICON } from '../../constants/iconSize'
 
-import "../styles.css";
+import '../styles.css'
 
 export default class Screen extends Component {
   componentDidMount() {
-    document.title = this.props.documentTitle;
+    document.title = this.props.documentTitle
   }
   render() {
     return (
@@ -21,10 +21,9 @@ export default class Screen extends Component {
             <div>
               <IconContext.Provider
                 value={{
-                  color: "white",
+                  color: 'white',
                   size: TOP_ICON
-                }}
-              >
+                }}>
                 <div>
                   <FaHome />
                 </div>
@@ -50,7 +49,7 @@ export default class Screen extends Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
@@ -60,4 +59,4 @@ Screen.propTypes = {
   documentTitle: PropTypes.string.isRequired,
   handleSaveBook: PropTypes.func.isRequired,
   handleLibrary: PropTypes.func.isRequired
-};
+}

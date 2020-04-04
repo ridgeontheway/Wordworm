@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import Screen from "./Screen";
-import "../styles.css";
+import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
+import Screen from './Screen'
+import '../styles.css'
 
 export default class DashboardScreen extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       redirect: false,
-      pathname: "/"
-    };
-    this.handleOnLibraryPress = this.handleOnLibraryPress.bind(this);
-    this.handleOnSavePress = this.handleOnSavePress.bind(this);
+      pathname: '/'
+    }
+    this.handleOnLibraryPress = this.handleOnLibraryPress.bind(this)
+    this.handleOnSavePress = this.handleOnSavePress.bind(this)
   }
 
   handleOnLibraryPress() {
-    this.setState({ redirect: true, pathname: "/library" });
+    this.setState({ redirect: true, pathname: '/library' })
   }
 
   handleOnSavePress() {
-    this.setState({ redirect: true, pathname: "/upload" });
+    this.setState({ redirect: true, pathname: '/upload' })
   }
 
   render() {
@@ -42,6 +42,6 @@ export default class DashboardScreen extends Component {
           />
         )}
       </div>
-    );
+    )
   }
 }

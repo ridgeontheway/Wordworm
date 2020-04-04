@@ -6,7 +6,7 @@ import {
   SYLLABLE_FOCUSED,
   MINI_GAME,
   MINI_GAME_SUCCESS
-} from '../../modules/reading/Types'
+} from '../../containers/reading/Types'
 import './styles.css'
 export default class ReadableContent extends Component {
   constructor(props) {

@@ -4,7 +4,7 @@ import {
   INCORRECT,
   UNREAD,
   MINI_GAME_SUCCESS
-} from '../modules/reading/Types'
+} from '../containers/reading/Types'
 import {
   SPOKEN_CONFIDENCE,
   WORD_SIMILARITY

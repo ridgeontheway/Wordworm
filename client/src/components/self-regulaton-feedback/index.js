@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal'
 import PropTypes from 'prop-types'
 import CloseButton from '../button/close'
 import ReadableContent from '../readable'
-import { SYLLABLE_FOCUSED } from '../../modules/reading/Types'
+import { SYLLABLE_FOCUSED } from '../../containers/reading/Types'
 import './styles.css'
 import '../styles.css'
 export default class SelfRegulationFeedback extends Component {
