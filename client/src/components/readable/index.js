@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import {
   CORRECT,
   INCORRECT,
-  SYLLABLE_FOCUSED
+  SYLLABLE_FOCUSED,
+  MINI_GAME
 } from '../../modules/reading/Types'
 import './styles.css'
 export default class ReadableContent extends Component {
@@ -25,6 +26,8 @@ export default class ReadableContent extends Component {
           {this.props.content}
         </p>
       )
+    } else if (this.props.lookUp['status'] === MINI_GAME) {
+      return <p className="miniGame__theme">{this.props.content}</p>
     } else {
       return <p className="bookContents__theme">{this.props.content}</p>
     }

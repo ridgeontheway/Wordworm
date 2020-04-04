@@ -3,26 +3,25 @@ import Modal from 'react-bootstrap/Modal'
 import PropTypes from 'prop-types'
 import CloseButton from '../button/close'
 import ReadableContent from '../readable'
-import { SYLLABLE_FOCUSED } from '../../modules/reading/Types'
+import { MINI_GAME } from '../../modules/reading/Types'
 import './styles.css'
 import '../styles.css'
 export default class BallonGame extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      brokenWordLookUp: []
+      wordLookUp: []
     }
   }
 
   static getDerivedStateFromProps(props, state) {
     if (props.wordArr) {
-      const syllableLookUp = props.wordArr.map((letterArr, idx) => {
-        const twoLetterCombinationStr = letterArr.join('')
-        const readingStatus = SYLLABLE_FOCUSED
-        return { word: twoLetterCombinationStr, status: readingStatus }
+      const lookUp = props.wordArr.map(incorrectWord => {
+        const readingStatus = MINI_GAME
+        return { word: incorrectWord['word'], status: readingStatus }
       })
       return {
-        brokenWordLookUp: syllableLookUp
+        brokenWordLookUp: lookUp
       }
     }
     return null
@@ -33,8 +32,14 @@ export default class BallonGame extends Component {
       return (
         <div className="wordContainer">
           {this.state.brokenWordLookUp.map((data, idx) => {
+            const animationTime = Math.random() * (5 - 3 + 1) + 3
+            const divStyle = {
+              animationDuration: animationTime + 's'
+            }
             return (
-              <ReadableContent content={data['word']} lookUp={data} key={idx} />
+              <div className="balloon" style={divStyle} key={idx}>
+                <ReadableContent content={data['word']} lookUp={data} />
+              </div>
             )
           })}
         </div>
@@ -50,15 +55,13 @@ export default class BallonGame extends Component {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <div className="titleContainer">
             <div>
-              <h2 className="title__theme">
-                having trouble with '{this.props.word}'
-              </h2>
+              <h2 className="title__theme">pop the ballons</h2>
             </div>
             <div>
-              <p className="text__theme">try breaking it up</p>
+              <p className="text__theme">say the words to pop the ballons</p>
             </div>
           </div>
         </Modal.Header>
@@ -78,6 +81,5 @@ export default class BallonGame extends Component {
 BallonGame.propTypes = {
   showModal: PropTypes.bool.isRequired,
   handleModalClose: PropTypes.func.isRequired,
-  wordArr: PropTypes.array.isRequired,
-  word: PropTypes.string.isRequired
+  wordArr: PropTypes.array.isRequired
 }

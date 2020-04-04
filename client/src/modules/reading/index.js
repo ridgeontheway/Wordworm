@@ -9,7 +9,7 @@ import IncorrectReadingStatus from '../../components/reading-status/incorrect'
 import SelfRegulationFeedback from '../../components/self-regulaton-feedback'
 import BallonGame from '../../components/ballon-game'
 import SyllableUtility from '../../utilities/syllableUtility'
-import { UNREAD } from './Types'
+import { UNREAD, INCORRECT } from './Types'
 import SpeechUtility from '../../utilities/speechUtility'
 import {
   DASHBOARD_REDIRECT,
@@ -32,7 +32,9 @@ class ReadingScreen extends Component {
       redirect: false,
       redirectPath: null,
       showRegulationModal: false,
+      showMiniGameModal: false,
       modalWordArr: [],
+      modalMiniGameArr: [],
       modalWord: ''
     }
     this.onVoiceDataReceived = this.onVoiceDataReceived.bind(this)
@@ -40,6 +42,8 @@ class ReadingScreen extends Component {
     this.onLibrarySelected = this.onLibrarySelected.bind(this)
     this.onIncorrectWordClicked = this.onIncorrectWordClicked.bind(this)
     this.toggleSelfRegulationModal = this.toggleSelfRegulationModal.bind(this)
+    this.onMiniGameClicked = this.onMiniGameClicked.bind(this)
+    this.toggleMiniGameModal = this.toggleMiniGameModal.bind(this)
   }
   componentDidMount() {
     this.setState(
@@ -133,7 +137,21 @@ class ReadingScreen extends Component {
   }
 
   onMiniGameClicked() {
-    console.log('we want to toggle the mini-game now....')
+    // Extracting the incorrect words from the overall state
+    const incorrectWordsArr = this.state.bookContentsLookUp.filter(data => {
+      const { status: currentWordStatus } = data
+      return currentWordStatus === INCORRECT
+    })
+    this.setState({
+      showMiniGameModal: true,
+      modalMiniGameArr: incorrectWordsArr
+    })
+  }
+
+  toggleMiniGameModal() {
+    this.setState({
+      showMiniGameModal: !this.state.showMiniGameModal
+    })
   }
 
   toggleSelfRegulationModal() {
@@ -181,6 +199,11 @@ class ReadingScreen extends Component {
                 wordArr={this.state.modalWordArr}
                 word={this.state.modalWord}
                 clearSpeechData={this.props.clearSpeechData}
+              />
+              <BallonGame
+                showModal={this.state.showMiniGameModal}
+                handleModalClose={this.toggleMiniGameModal}
+                wordArr={this.state.modalMiniGameArr}
               />
             </div>
           ) : (
