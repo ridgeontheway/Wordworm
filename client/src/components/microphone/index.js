@@ -10,7 +10,12 @@ import ConverterUtility from '../../utilities/converterUtility'
 import SocketUtility from '../../utilities/socketUtility'
 import './styles.css'
 
+// Properties used for voice streaming over SocketIO
 const socket = io()
+var context = null,
+  processor = null,
+  input = null,
+  globalStream = null
 
 export default class Microphone extends Component {
   constructor() {
@@ -18,8 +23,6 @@ export default class Microphone extends Component {
     this.state = {
       record: false
     }
-    // Properties used for voice streaming over SocketIO
-
     // Buffer-size set to 0 as per recommendations by Mozilla
     // https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer/getChannelData
     this.bufferSize = 0
@@ -27,11 +30,6 @@ export default class Microphone extends Component {
       audio: true,
       video: false
     }
-    this.context = null
-    this.processor = null
-    this.input = null
-    this.globalStream = null
-
     this.streamAudio = this.streamAudio.bind(this)
     this.initRecording = this.initRecording.bind(this)
     this.stopRecording = this.stopRecording.bind(this)
@@ -48,16 +46,16 @@ export default class Microphone extends Component {
 
   initRecording(onData, onError) {
     SocketUtility.emitStartStream(socket)
-    this.processor = this.context.createScriptProcessor(this.bufferSize, 1, 1)
-    this.processor.connect(this.context.destination)
-    this.context.resume()
-    ConverterUtility.setSampleRate(this.context.sampleRate)
+    processor = context.createScriptProcessor(this.bufferSize, 1, 1)
+    processor.connect(context.destination)
+    context.resume()
+    ConverterUtility.setSampleRate(context.sampleRate)
 
     navigator.mediaDevices.getUserMedia(this.constraints).then(stream => {
-      this.globalStream = stream
-      this.input = this.context.createMediaStreamSource(stream)
-      this.input.connect(this.processor)
-      this.processor.onaudioprocess = e => {
+      globalStream = stream
+      input = context.createMediaStreamSource(stream)
+      input.connect(processor)
+      processor.onaudioprocess = e => {
         var left = e.inputBuffer.getChannelData(0)
         var left16 = ConverterUtility.downSampleAudioBuffer(
           left,
@@ -82,33 +80,36 @@ export default class Microphone extends Component {
   closeAll() {
     SocketUtility.endStreamListeners(socket)
 
-    const tracks = this.globalStream ? this.globalStream.getTracks() : null
+    const tracks = globalStream ? globalStream.getTracks() : null
     const track = tracks ? tracks[0] : null
 
     if (track) {
       track.stop()
     }
 
-    if (this.processor) {
-      if (this.input) {
+    if (processor) {
+      if (input) {
         try {
-          this.input.disconnect(this.processor)
+          input.disconnect(processor)
         } catch (error) {
           console.warn('WARN: unable to disconnect input')
         }
       }
-      this.processor.disconnect(this.context.destination)
+      processor.disconnect(context.destination)
     }
-
-    this.input = null
-    this.processor = null
-    this.context = null
+    if (context) {
+      context.close().then(() => {
+        input = null
+        processor = null
+        context = null
+      })
+    }
   }
 
   streamAudio() {
     this.setState({ record: true }, () => {
       var AudioContext = window.AudioContext || window.webkitAudioContext
-      this.context = new AudioContext()
+      context = new AudioContext()
       this.initRecording(
         data => {
           this.props.onVoiceDataReceived(data)
