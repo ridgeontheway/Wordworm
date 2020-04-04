@@ -1,5 +1,4 @@
 import axios from 'axios'
-import $ from 'jquery'
 import {
   FETCH_USER,
   GET_BOOK_CONTENTS,
