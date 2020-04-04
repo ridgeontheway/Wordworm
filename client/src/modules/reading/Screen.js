@@ -6,6 +6,7 @@ import { TOP_ICON } from '../../constants/iconSize'
 import ReadableContent from '../../components/readable'
 import DashboardButton from '../../components/button/dashboard'
 import LibraryButton from '../../components/button/library'
+import MiniGameButton from '../../components/button/minigame'
 
 import './styles.css'
 import '../styles.css'
@@ -58,6 +59,12 @@ export default class Screen extends Component {
               <div className="reading-button__padding">
                 <LibraryButton onPress={this.props.onLibrarySelected} />
               </div>
+              <div className="reading-button__padding">
+                <MiniGameButton
+                  onPress={this.props.onMiniGameSelected}
+                  isClickable={this.props.numIncorrectWords > 0}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -71,5 +78,7 @@ Screen.propTypes = {
   bookContentLookUp: PropTypes.array.isRequired,
   onDashboardSelected: PropTypes.func.isRequired,
   onLibrarySelected: PropTypes.func.isRequired,
+  onMiniGameSelected: PropTypes.func.isRequired,
+  numIncorrectWords: PropTypes.number.isRequired,
   onIncorrectWordClicked: PropTypes.func.isRequired
 }
