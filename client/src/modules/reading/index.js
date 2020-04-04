@@ -94,7 +94,11 @@ class ReadingScreen extends Component {
         bookContentsLookUp: bookDataLookUp,
         requestedContentUpdate: false
       }
-    } else if (props.speechData && !state.showRegulationModal) {
+    } else if (
+      props.speechData &&
+      !state.showRegulationModal &&
+      !state.showMiniGameModal
+    ) {
       const updatedState = SpeechUtility.processReducedSpeechData(
         props.speechData,
         state.bookContentsLookUp,
@@ -204,6 +208,7 @@ class ReadingScreen extends Component {
                 showModal={this.state.showMiniGameModal}
                 handleModalClose={this.toggleMiniGameModal}
                 wordArr={this.state.modalMiniGameArr}
+                clearSpeechData={this.props.clearSpeechData}
               />
             </div>
           ) : (
