@@ -48,7 +48,7 @@ class Upload extends Component {
     )
   }
   static getDerivedStateFromProps(props, state) {
-    if (props.bookUpload && props.bookUpload == state.uploaded) {
+    if (props.bookUpload && props.bookUpload === state.uploaded) {
       return {
         uploaded: false,
         selectedFile: null

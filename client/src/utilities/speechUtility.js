@@ -33,7 +33,7 @@ const SpeechUtility = {
       })
     })
     // Pre-check to determine if we need to look though the state to update, if not we return early
-    if (highestConfidence == 0) {
+    if (highestConfidence === 0) {
       return null
     }
     var updatedState = null
@@ -80,7 +80,7 @@ const SpeechUtility = {
       })
     })
     // Pre-check to determine if we need to look though the state to update, if not we return early
-    if (highestConfidence == 0) {
+    if (highestConfidence === 0) {
       return null
     }
     var updatedState = null
@@ -117,7 +117,7 @@ const SpeechUtility = {
           const similarity = compareTwoStrings(currentWord, stateWord)
           // A match has been made
           if (
-            (currentWord == stateWord &&
+            (currentWord === stateWord &&
               currentConfidence >= SPOKEN_CONFIDENCE) ||
             similarity >= WORD_SIMILARITY
           ) {
