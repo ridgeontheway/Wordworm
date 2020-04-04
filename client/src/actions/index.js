@@ -1,5 +1,4 @@
 import axios from 'axios'
-import $ from 'jquery'
 import {
   FETCH_USER,
   GET_BOOK_CONTENTS,
@@ -10,8 +9,6 @@ import {
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user')
-  console.log(' this is the data that we are getting from the API = ')
-  console.log(res.data)
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
@@ -21,7 +18,6 @@ export const getWordsFromBook = _bookID => async dispatch => {
     startWord: '0',
     incrementValue: '10'
   }
-  console.log(params)
   const res = await axios.get('/api/word-retrieval', { params })
   dispatch({ type: GET_BOOK_CONTENTS, payload: res.data })
 }
@@ -92,20 +88,19 @@ export const uploadBook = (_formData, _fileName) => async dispatch => {
           method: 'post',
           url: '/api/create-book-progress?bookName=' + fileName
         }).then(currentlyReading => {
-          console.log(
-            'this is what we are currently reading!: ',
-            currentlyReading
-          )
           dispatch({ type: UPLOAD_STATUS, payload: uploadSuccess })
         })
       }
     })
     .catch(err => {
-      console.log('this is an error', err)
       console.error(err)
     })
 }
 
 export const resetUploadStatus = () => async dispatch => {
   dispatch({ type: UPLOAD_STATUS, payload: false })
+}
+
+export const clearSpeechData = () => async dispatch => {
+  dispatch({ type: PROCESS_SPEECH_DATA, payload: false })
 }

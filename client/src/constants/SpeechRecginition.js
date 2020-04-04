@@ -1,2 +1,3 @@
 export const SPOKEN_CONFIDENCE = 0.7
 export const WORD_SIMILARITY = 0.66
+export const AUDIO_STREAM_SAMPLING_RATE = 16000

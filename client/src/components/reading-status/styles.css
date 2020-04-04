@@ -1,0 +1,53 @@
+.reading-status-content__container {
+  border-radius: 25px;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 60px;
+  height: 60px;
+  padding: 1px 6px;
+  background-color: #04528d;
+  border-color: #04528d;
+  -moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.reading-status-content__container-margin {
+  margin-right: 0.4vw;
+}
+
+.reading-status-content__wrapper {
+  align-self: center;
+}
+
+.reading-status-content__padding {
+  padding-right: 0.2em;
+}
+
+.reading-status-text {
+  color: white;
+}
+
+.reading-status__wrapper {
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  flex-direction: row;
+  align-self: center;
+}
+
+.correct-colorFlash {
+  background-color: #29a521;
+  border-color: #29a521;
+}
+
+.incorrect-colorFlash {
+  background-color: #ff9000;
+  border-color: #ff9000;
+}

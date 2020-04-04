@@ -5,6 +5,7 @@ import { FaBook } from 'react-icons/fa'
 import { connect } from 'react-redux'
 import { TOP_ICON } from '../../constants/iconSize'
 import BookCardComponent from '../../components/card/book'
+import DashboardButton from '../../components/button/dashboard'
 import './styles.css'
 import '../styles.css'
 class Screen extends Component {
@@ -41,7 +42,6 @@ class Screen extends Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.readingInfo && props.readingInfo !== state.readingInfo) {
-      console.log('this is the props that we are getting: ', props.readingInfo)
       return {
         readingInfo: props.readingInfo
       }
@@ -69,6 +69,9 @@ class Screen extends Component {
         </div>
         <div className="content__container">
           {this.state.readingInfo ? this.renderReadingInfo() : null}
+          <div className="button__container">
+            <DashboardButton onPress={this.props.onDashboardSelected} />
+          </div>
         </div>
       </div>
     )
@@ -82,7 +85,8 @@ function mapStateToProps(state) {
 }
 
 Screen.propTypes = {
-  onBookSelect: PropTypes.func.isRequired
+  onBookSelect: PropTypes.func.isRequired,
+  onDashboardSelected: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps)(Screen)

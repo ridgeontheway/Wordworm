@@ -1,0 +1,44 @@
+.readable-content__wrapper {
+  background-color: #ffff;
+  display: -webkit-flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 80vw;
+}
+
+.reading-content-components__wrapper {
+  background-color: inherit;
+  display: -webkit-flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-width: 100vw;
+}
+
+.content-padding {
+  margin-bottom: 1vh;
+}
+
+.reading-button__wrapper {
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.reading-button__padding {
+  padding: 0.5em;
+}
+
+.reading-status__container {
+  position: absolute;
+  right: 0;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  flex-direction: row;
+  padding-right: 13vw;
+}

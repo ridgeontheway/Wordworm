@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
-import { IconContext } from 'react-icons'
-import { FaCloudUploadAlt } from 'react-icons/fa'
 import PropTypes from 'prop-types'
+import { IconContext } from 'react-icons'
+import { FaUserPlus } from 'react-icons/fa'
 import { TOP_ICON } from '../../constants/iconSize'
-import Upload from '../../components/upload'
-import './styles.css'
+import SignInButton from '../../components/button/sign-in'
+import Login from '../../components/login'
+
 import '../styles.css'
+import './styles.css'
+
 export default class Screen extends Component {
   render() {
     return (
-      <div className="screen__container upload-content__container">
+      <div className="screen__container">
         <div className="title__container">
           <div className="icon__container">
             <div>
@@ -19,7 +22,7 @@ export default class Screen extends Component {
                   size: TOP_ICON
                 }}>
                 <div>
-                  <FaCloudUploadAlt />
+                  <FaUserPlus />
                 </div>
               </IconContext.Provider>
             </div>
@@ -28,7 +31,14 @@ export default class Screen extends Component {
         <div className="content__container">
           <div className="content__wrapper">
             <div className="login__container">
-              <Upload onSubmit={this.props.handleFormSubmit} />
+              <Login
+                microphoneTitle={this.props.loginMicrophoneTitle}
+                cloudTitle={this.props.loginCloudTitle}
+                dbTitle={this.props.loginDBTitle}
+              />
+            </div>
+            <div className="sign-in__theme">
+              <SignInButton />
             </div>
           </div>
         </div>
@@ -38,5 +48,7 @@ export default class Screen extends Component {
 }
 
 Screen.propTypes = {
-  handleFormSubmit: PropTypes.func.isRequired
+  loginMicrophoneTitle: PropTypes.string.isRequired,
+  loginCloudTitle: PropTypes.string.isRequired,
+  loginDBTitle: PropTypes.string.isRequired
 }
