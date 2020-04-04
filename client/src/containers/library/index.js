@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import * as actions from '../../actions'
+import {
+  DASHBOARD_REDIRECT,
+  READ_BOOK_REDIRECT
+} from '../../constants/RedirectPaths'
 import Screen from './Screen'
 import '../styles.css'
 class LibraryScreen extends Component {
@@ -10,10 +14,12 @@ class LibraryScreen extends Component {
     this.state = {
       userSignedIn: null,
       redirect: false,
+      redirectPath: '',
       bookIDSelected: null,
       bookTitleSelected: null
     }
     this.onBookSelect = this.onBookSelect.bind(this)
+    this.onDashboardSelected = this.onDashboardSelected.bind(this)
   }
   componentDidMount() {
     this.props.fetchUser()
@@ -33,7 +39,12 @@ class LibraryScreen extends Component {
   loadContent() {
     // Rendering the user's books
     this.props.fetchCurrentlyReading(this.state.userSignedIn)
-    return <Screen onBookSelect={this.onBookSelect} />
+    return (
+      <Screen
+        onBookSelect={this.onBookSelect}
+        onDashboardSelected={this.onDashboardSelected}
+      />
+    )
   }
 
   onBookSelect(_bookTitle, _bookID) {
@@ -42,24 +53,44 @@ class LibraryScreen extends Component {
     this.setState({
       bookTitleSelected: _bookTitle,
       bookIDSelected: _bookID,
-      redirect: true
+      redirect: true,
+      redirectPath: READ_BOOK_REDIRECT
+    })
+  }
+
+  onDashboardSelected() {
+    console.log('dashboard selected!')
+    this.setState({
+      redirect: true,
+      redirectPath: DASHBOARD_REDIRECT
     })
   }
 
   renderContent() {
     if (this.state.redirect) {
-      return (
-        <Redirect
-          push
-          to={{
-            pathname: '/read-book',
-            state: {
-              bookTitle: this.state.bookTitleSelected,
-              bookID: this.state.bookIDSelected
-            }
-          }}
-        />
-      )
+      if (this.state.redirectPath === DASHBOARD_REDIRECT) {
+        return (
+          <Redirect
+            push
+            to={{
+              pathname: this.state.redirectPath
+            }}
+          />
+        )
+      } else {
+        return (
+          <Redirect
+            push
+            to={{
+              pathname: this.state.redirectPath,
+              state: {
+                bookTitle: this.state.bookTitleSelected,
+                bookID: this.state.bookIDSelected
+              }
+            }}
+          />
+        )
+      }
     }
     if (this.state.userSignedIn) {
       return this.loadContent()

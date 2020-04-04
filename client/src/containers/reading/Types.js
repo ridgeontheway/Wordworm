@@ -2,3 +2,7 @@
 export const UNREAD = 'unread'
 export const CORRECT = 'correct'
 export const INCORRECT = 'incorrect'
+export const SYLLABLE_HIDDEN = 'syllable-hide'
+export const SYLLABLE_FOCUSED = 'syllable-focused'
+export const MINI_GAME = 'mini-game'
+export const MINI_GAME_SUCCESS = 'mini-game-success'

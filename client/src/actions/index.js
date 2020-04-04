@@ -109,3 +109,7 @@ export const uploadBook = (_formData, _fileName) => async dispatch => {
 export const resetUploadStatus = () => async dispatch => {
   dispatch({ type: UPLOAD_STATUS, payload: false })
 }
+
+export const clearSpeechData = () => async dispatch => {
+  dispatch({ type: PROCESS_SPEECH_DATA, payload: false })
+}
