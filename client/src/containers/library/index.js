@@ -100,7 +100,7 @@ class LibraryScreen extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.auth && state.userSignedIn != props.auth) {
+    if (props.auth && state.userSignedIn !== props.auth) {
       return {
         userSignedIn: props.auth
       }

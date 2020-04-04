@@ -21,7 +21,7 @@ const ConverterUtility = {
     // Determining if outSampleRate is valid given buffer
     if (!validDownSamplingRate)
       throw 'downsampling rate show be smaller than original sample rate'
-    else if (validDownSamplingRate == buffer) return buffer
+    else if (validDownSamplingRate === buffer) return buffer
 
     const sampleRateRatio = sampleRate / outSampleRate
     const newLength = Math.round(buffer.length / sampleRateRatio)

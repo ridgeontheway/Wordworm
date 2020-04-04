@@ -75,7 +75,7 @@ class ReadingScreen extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
       props.content &&
-      props.content != state.content &&
+      props.content !== state.content &&
       state.requestedContentUpdate
     ) {
       // Storing the original data from the text in split form --> to be sent as 'content' in Screen.js

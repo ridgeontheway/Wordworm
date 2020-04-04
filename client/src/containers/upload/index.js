@@ -27,7 +27,10 @@ class UploadScreen extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.bookUpload && props.bookUpload != state.showUploadCompleteToast) {
+    if (
+      props.bookUpload &&
+      props.bookUpload !== state.showUploadCompleteToast
+    ) {
       return {
         showUploadCompleteToast: true
       }

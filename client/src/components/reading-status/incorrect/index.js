@@ -14,7 +14,7 @@ export default class IncorrectReadingStatus extends Component {
     }
   }
   componentDidUpdate(prevProps) {
-    if (this.props.incorrectWordsSpoken != prevProps.incorrectWordsSpoken) {
+    if (this.props.incorrectWordsSpoken !== prevProps.incorrectWordsSpoken) {
       this.setState({ flashFail: true }, () => {
         setTimeout(() => {
           this.setState({ flashFail: false })
