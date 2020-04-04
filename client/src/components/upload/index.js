@@ -35,17 +35,9 @@ class Upload extends Component {
   }
   onChange(event) {
     const files = event.target.files
-    this.setState(
-      {
-        selectedFile: files[0]
-      },
-      () => {
-        console.log(
-          'I have now saved the file to state:',
-          this.state.selectedFile
-        )
-      }
-    )
+    this.setState({
+      selectedFile: files[0]
+    })
   }
   static getDerivedStateFromProps(props, state) {
     if (props.bookUpload && props.bookUpload === state.uploaded) {

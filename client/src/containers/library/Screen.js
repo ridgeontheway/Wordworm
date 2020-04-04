@@ -42,7 +42,6 @@ class Screen extends Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.readingInfo && props.readingInfo !== state.readingInfo) {
-      console.log('this is the props that we are getting: ', props.readingInfo)
       return {
         readingInfo: props.readingInfo
       }

@@ -10,10 +10,6 @@ import '../styles.css'
 import './styles.css'
 
 export default class Screen extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     return (
       <div className="screen__container">

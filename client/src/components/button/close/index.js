@@ -28,7 +28,7 @@ export default class CloseButton extends Component {
             </IconContext.Provider>
           </div>
           <div>
-            <p className="text__body">Try Again</p>
+            <p className="text__body">Return</p>
           </div>
         </div>
       </Button>
