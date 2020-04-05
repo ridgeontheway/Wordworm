@@ -7,6 +7,7 @@ import Microphone from '../../components/microphone'
 import CorrectReadingStatus from '../../components/reading-status/correct'
 import IncorrectReadingStatus from '../../components/reading-status/incorrect'
 import SelfRegulationFeedback from '../../components/self-regulaton-feedback'
+import LoadingContentButton from '../../components/button/loading-content'
 import BallonGame from '../../components/ballon-game'
 import SyllableUtility from '../../utilities/syllableUtility'
 import { UNREAD, INCORRECT } from './Types'
@@ -212,7 +213,9 @@ class ReadingScreen extends Component {
               />
             </div>
           ) : (
-            <h1>loading....</h1>
+            <div className="main__container">
+              <LoadingContentButton />
+            </div>
           )}
         </div>
       )

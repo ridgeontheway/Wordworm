@@ -48,7 +48,7 @@ export default class Screen extends Component {
           </div>
         </div>
         <div className="content__container">
-          <div className="content__wrapper content-padding">
+          <div className="content__wrapper content-padding readable-content__corners">
             <div>{this.props.bookContent ? this.renderContent() : null}</div>
           </div>
           <div className="button__container">
