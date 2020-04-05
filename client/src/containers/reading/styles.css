@@ -7,6 +7,10 @@
   max-width: 80vw;
 }
 
+.readable-content__corners {
+  border-radius: .25rem;
+}
+
 .reading-content-components__wrapper {
   background-color: inherit;
   display: -webkit-flex;
