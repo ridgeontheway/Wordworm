@@ -19,6 +19,13 @@ mongoose.connect(sessionKeys.mongoURI, {
   useUnifiedTopology: true
 })
 
+const forceSsl = (req, res, next) => {
+  if (req.headers['x-forwarded-proto'] !== 'https') {
+    return res.redirect(['https://', req.get('Host'), req.url].join(''))
+  }
+  return next()
+}
+
 const PORT = normalizePort(process.env.PORT || 5000)
 var app: express.Application = express()
 var http = createServer(app)
@@ -43,6 +50,7 @@ require('./config/routes/socketRoutes')(io)
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))
+  app.use(forceSsl)
   app.get('*', (req, res) => {
     res.sendFile(resolve(__dirname, '../client', 'build', 'index.html'))
   })
