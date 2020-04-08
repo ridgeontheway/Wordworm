@@ -8,17 +8,11 @@ import { CARD_MENU_ICON } from '../../constants/iconSize'
 import { AUDIO_STREAM_SAMPLING_RATE } from '../../constants/SpeechRecginition'
 import ConverterUtility from '../../utilities/converterUtility'
 import SocketUtility from '../../utilities/socketUtility'
+import getUserMedia from 'get-user-media-promise'
 import './styles.css'
 
 // Properties used for voice streaming over SocketIO
 const socket = io()
-// Buffer-size set to 0 as per recommendations by Mozilla
-// https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer/getChannelData
-const bufferSize = 0
-const constraints = {
-  audio: true,
-  video: false
-}
 var context = null,
   processor = null,
   input = null,
@@ -33,36 +27,46 @@ export default class Microphone extends Component {
     this.streamAudio = this.streamAudio.bind(this)
     this.initRecording = this.initRecording.bind(this)
     this.stopRecording = this.stopRecording.bind(this)
-    this.closeAll = this.closeAll.bind(this)
     this.renderButton = this.renderButton.bind(this)
+    this.closeAll = this.closeAll.bind(this)
+
+    this.closeAll()
   }
 
   componentWillUnmount() {
-    if (this.state.record) {
+    this.stopRecording()
+  }
+
+  componentDidMount() {
+    window.onbeforeunload = function() {
       this.stopRecording()
-    }
+    }.bind(this)
   }
 
   initRecording(onData, onError) {
     SocketUtility.emitStartStream(socket)
-    processor = context.createScriptProcessor(bufferSize, 1, 1)
+    processor = context.createScriptProcessor(0, 1, 1)
     processor.connect(context.destination)
     context.resume()
     ConverterUtility.setSampleRate(context.sampleRate)
 
-    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-      globalStream = stream
-      input = context.createMediaStreamSource(stream)
-      input.connect(processor)
-      processor.onaudioprocess = e => {
-        var left = e.inputBuffer.getChannelData(0)
-        var left16 = ConverterUtility.downSampleAudioBuffer(
-          left,
-          AUDIO_STREAM_SAMPLING_RATE
-        )
-        SocketUtility.emitBinaryAudioData(left16, socket)
-      }
-    })
+    getUserMedia({ video: false, audio: true })
+      .then(stream => {
+        globalStream = stream
+        input = context.createMediaStreamSource(stream)
+        input.connect(processor)
+        processor.onaudioprocess = e => {
+          var left = e.inputBuffer.getChannelData(0)
+          var left16 = ConverterUtility.downSampleAudioBuffer(
+            left,
+            AUDIO_STREAM_SAMPLING_RATE
+          )
+          SocketUtility.emitBinaryAudioData(left16, socket)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
 
     if (onData) {
       SocketUtility.speechDataReceived(onData, socket)
@@ -70,13 +74,8 @@ export default class Microphone extends Component {
     SocketUtility.errorReceived(onError, this.closeAll, socket)
   }
 
-  stopRecording() {
-    this.setState({ record: false })
-    SocketUtility.emitEndStream(socket)
-    this.closeAll()
-  }
-
   closeAll() {
+    console.log('we are closing now.....')
     SocketUtility.endStreamListeners(socket)
 
     const tracks = globalStream ? globalStream.getTracks() : null
@@ -105,19 +104,24 @@ export default class Microphone extends Component {
     }
   }
 
+  stopRecording() {
+    this.setState({ record: false })
+    SocketUtility.emitEndStream(socket)
+    this.closeAll()
+  }
+
   streamAudio() {
-    this.setState({ record: true }, () => {
-      var AudioContext = window.AudioContext || window.webkitAudioContext
-      context = new AudioContext()
-      this.initRecording(
-        data => {
-          this.props.onVoiceDataReceived(data)
-        },
-        error => {
-          console.error('error when recording: ', error)
-        }
-      )
-    })
+    this.setState({ record: true })
+    var AudioContext = window.AudioContext || window.webkitAudioContext
+    context = new AudioContext()
+    this.initRecording(
+      data => {
+        this.props.onVoiceDataReceived(data)
+      },
+      error => {
+        console.error('error when recording: ', error)
+      }
+    )
   }
 
   renderButton() {
