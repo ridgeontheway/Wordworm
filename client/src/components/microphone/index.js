@@ -12,6 +12,13 @@ import './styles.css'
 
 // Properties used for voice streaming over SocketIO
 const socket = io()
+// Buffer-size set to 0 as per recommendations by Mozilla
+// https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer/getChannelData
+const bufferSize = 0
+const constraints = {
+  audio: true,
+  video: false
+}
 var context = null,
   processor = null,
   input = null,
@@ -23,13 +30,6 @@ export default class Microphone extends Component {
     this.state = {
       record: false
     }
-    // Buffer-size set to 0 as per recommendations by Mozilla
-    // https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer/getChannelData
-    this.bufferSize = 0
-    this.constraints = {
-      audio: true,
-      video: false
-    }
     this.streamAudio = this.streamAudio.bind(this)
     this.initRecording = this.initRecording.bind(this)
     this.stopRecording = this.stopRecording.bind(this)
@@ -38,7 +38,7 @@ export default class Microphone extends Component {
   }
 
   componentWillUnmount() {
-    if (this.input) {
+    if (input) {
       // closing the audio context
       this.stopRecording()
     }
@@ -46,12 +46,12 @@ export default class Microphone extends Component {
 
   initRecording(onData, onError) {
     SocketUtility.emitStartStream(socket)
-    processor = context.createScriptProcessor(this.bufferSize, 1, 1)
+    processor = context.createScriptProcessor(bufferSize, 1, 1)
     processor.connect(context.destination)
     context.resume()
     ConverterUtility.setSampleRate(context.sampleRate)
 
-    navigator.mediaDevices.getUserMedia(this.constraints).then(stream => {
+    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
       globalStream = stream
       input = context.createMediaStreamSource(stream)
       input.connect(processor)
