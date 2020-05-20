@@ -91,11 +91,11 @@ class BallonGame extends Component {
         <Modal.Header>
           <div className="titleContainer">
             <div>
-              <h2 className="title__theme">change the ballons</h2>
+              <h2 className="title__theme">change the balloons</h2>
             </div>
             <div>
               <p className="text__theme">
-                say the words correctly to make the ballons change colour
+                say the words correctly to make the balloons change colour
               </p>
             </div>
           </div>
