@@ -12,7 +12,7 @@ In order to run this project (locally) you will need:
 - [AWS (S3) Access Key ID](https://aws.amazon.com/s3/)
 - [AWS (S3) Access Key](https://aws.amazon.com/s3/)
 
-Alternativly, you can view this project on [Heroku](https://wordworm.herokuapp.com/). Please note that, since the free-tier is being used, the initial response from the server may be slow/
+Alternatively, you can view this project on [Heroku](https://wordworm.herokuapp.com/). Please note that, since the free-tier is being used, the initial response from the server may be slow.
 
 ### Running the Project
 
