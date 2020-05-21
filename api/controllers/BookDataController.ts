@@ -24,6 +24,7 @@ class BookDataController
     )
   }
 
+  // Uploads Specified book to S3
   create(req, res): void {
     try {
       this.cloudDataService.create(req, res, error => {
@@ -48,8 +49,6 @@ class BookDataController
       console.error('there was an issue with the request:', e)
     }
   }
-
-  // Uploads book to s3
 
   // Downloads specified book from s3 and retrieves the words specified (from startWordNumber -> incrementValue)
   retrieve(

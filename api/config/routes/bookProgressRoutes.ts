@@ -32,7 +32,6 @@ module.exports = (app: express.Application) => {
 
   app.get('/api/delete-book-progress', (req, res) => {
     if (req.query.userProgressObjectID) {
-      // TODO: add some auth here
       const objectID: string = req.query.userProgressObjectID
       res.send(bookDataController.delete(objectID))
     }

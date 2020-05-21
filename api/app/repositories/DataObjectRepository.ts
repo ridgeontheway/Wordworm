@@ -2,7 +2,6 @@ import S3Access from '../dataAccess/S3Access'
 
 export default class DataObjectRepository {
   private _dataAccess: S3Access
-  private _downloadedCache
 
   constructor() {
     this._dataAccess = new S3Access()

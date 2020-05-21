@@ -1,3 +1,4 @@
+// REGEX taken from https://stackoverflow.com/questions/49403285/splitting-word-into-syllables-in-javascript
 const syllableExpression = /[^aeiouy]*[aeiouy]+(?:[^aeiouy]*$|[^aeiouy](?=[^aeiouy]))?/gi
 const SyllableUtility = {
   findSyllables(_word) {
